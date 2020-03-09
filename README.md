@@ -9,5 +9,5 @@ zola serve
 
 Build for deployment
 ```
-zola build
+zola build --output-dir docs
 ```
