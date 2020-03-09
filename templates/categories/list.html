@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+
+{% block content %}
+    {% block header %}
+        {{ super() }}
+        <h1>{{ config.extra.after_dark_title }} <small>-- {{ config.description }}</small></h1>
+    {% endblock header %}
+
+    <div>
+        <h1>Categories</h1>
+    </div>
+
+    {% if terms %}
+        <ul>
+            {% for term in terms %}
+                <li>
+                    <a href="{{ term.permalink | safe }}">{{ term.name }}</a>({{ term.pages | length }})
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock content %}

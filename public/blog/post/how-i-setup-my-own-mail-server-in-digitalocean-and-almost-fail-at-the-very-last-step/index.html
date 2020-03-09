@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Javoscript</title>
+
+      <link rel="icon" type="image/png" href="/favicon.png">
+
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="https://javoscript.com/rss.xml">
+      
+
+      
+          <link rel="stylesheet" href="https://javoscript.com/site.css">
+          <link rel="stylesheet" href="https://javoscript.com/extra.css">
+      
+
+      
+      
+    </head>
+
+    <body class="hack dark main container">
+        
+
+    
+        <header>
+            <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;javoscript.com">
+                    <span itemprop="name">&#x2F;home
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;javoscript.com&#x2F;categories">
+                    <span itemprop="name">&#x2F;categories
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;javoscript.com&#x2F;tags">
+                    <span itemprop="name">&#x2F;tags
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;github.com&#x2F;javoscript">
+                    <span itemprop="name">&#x2F;github
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;twitter.com&#x2F;javoscript">
+                    <span itemprop="name">&#x2F;twitter
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;linkedin.com&#x2F;in&#x2F;javier-ugarte">
+                    <span itemprop="name">&#x2F;linkedin
+                    </span></a>
+            
+            </nav>
+        </header>
+    
+    <h1>Javoscript <small>-- Programming, technology and more...</small></h1>
+
+
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        <h1 itemprop="headline">How I setup my own mail server in DigitalOcean (and almost fail at the very last step)</h1>
+        <span class="muted">
+    <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <circle cx="16" cy="16" r="14"/>
+        <path d="M16 8 L16 16 20 20"/>
+    </svg>
+    <span>11 minute read</span>
+    <svg style="margin-bottom: -3px" class="i-edit" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z"/>
+    </svg>
+
+    Published: 2018-12-16
+</span>
+    </header>
+    <div itemprop="articleBody">
+      <blockquote>
+<p>TL;DR, Fully functional mail server with web client configured with Docker in DigitalOcean, using Mailgun as a relay server</p>
+</blockquote>
+<p><strong>Don't feel like reading? Check out the Github repo <a href="https://github.com/javoscript/mail-server">here</a>!</strong></p>
+<span id="continue-reading"></span>
+<p>(This is not intended to be a super detailed step by step guide to setting your own mailserver, but to share my own experience with this project.)</p>
+<p>There comes a time for every little project when a domain name for it's website has to be chosen. And after that, it's time to setup your nice and unique email account with the shiny new domain, right?</p>
+<p>Setting up a landing page with a pretty and responsive design is really easy nowadays, with a lot of templates to chose from if design is not your thing. Firing up a virtual machine in any of the popular hosting services and configuring the DNS records is straight forward.</p>
+<p>But when wanting to implement mailing with your own domain, lot's of options suddenly appear, each with it's benefits and drawbacks, different unique offerings, pricing, etc... Postfix, Sendmail, Sendgrid, Mailgun, your own SMTP, third party options, APIs, mailing as a service, web clients. How to pick what's best for you?</p>
+<p>Luckily for me, as a developer myself, the choice was really easy! Don't pay for it.. Implement it! So out in the quest for the easiest and most feature-packed solution I was. Having used Docker for some time in the web development and server setup space, I knew there had to be a pre-baked solution for my situation. After some digging, I came across an open source project that claimed to be what I was looking for. As they put it on <a href="https://mailu.io/index.html">their website</a>:</p>
+<blockquote>
+<p>Mailu is a simple yet full-featured mail server as a set of Docker images. It is free software (both as in free beer and as in free speech), open to suggestions and external contributions. The project aims at providing people with an easily setup, easily maintained and full-featured mail server while not shipping proprietary software nor unrelated features often found in popular groupware.</p>
+</blockquote>
+<p>So, the only thing left was to get a server within the internet's reach where to put this Docker containers to work and start sending mails from my own server. I've used DigitalOcean to host other web projects in the past, with low prices and reasonably good performance and support. So I spun up the most basic standard droplet <a href="https://www.digitalocean.com/pricing">for $5/month</a>, and on I went to configure and tie everything up.</p>
+<h3 id="first-nginx-as-a-reverse-proxy">First, NGINX as a reverse proxy</h3>
+<p>The default and easy way to setup Mailu on your server binds all the necessary ports of the host machine directly into the dockerized services. This was an issue for me, as I wanted to also host some websites on the same server. So I was forced into either using some unconventional ports and tinkering with more configuration or putting a reverse proxy as the gatekeeper to my server.</p>
+<p>I've done this before, using <a href="https://github.com/jwilder/nginx-proxy">this awesome dockerized NGINX reverse proxy</a>. I also used the <a href="https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion">Letsencrypt NGINX proxy companion</a> for automatic SSL certificates creation and renewal. Both are really easy to set up with a <code>docker-compose.yml</code> file. You can find the configuration I used on my <a href="https://github.com/javoscript/mail-server">github</a>.</p>
+<p>When you run the containers, with <code>docker-compose up -d</code> (to leave the containers running in <code>detached</code> mode, in the background), it binds ports 80 and 443 (standard HTTP and HTTPS ports) to the NGINX reverse proxy container, which then does it's magic.</p>
+<p>Once I had that running, I can fire up other containers with some special environment variables so that they automagically <em>&quot;register&quot;</em> themselves to the reverse proxy. The ones I used were <code>VIRTUAL_HOST</code>, <code>LETSENCRYPT_HOST</code> and <code>LETSENCRYPT_EMAIL</code>.</p>
+<h3 id="initial-dns-configuration">Initial DNS configuration</h3>
+<p>With the web server listening on ports 80 and 443 on my DigitalOcean droplet, now we have to configure the DNS records so that web traffic reaches our VM.
+Doing this is pretty straight forward:</p>
+<ul>
+<li><strong>Point to DigitalOcean nameservers from your domain registrar</strong> (<a href="https://www.digitalocean.com/community/tutorials/how-to-point-to-digitalocean-nameservers-from-common-domain-registrars">quick guide</a>). Basically, just set up <code>ns1.digitalocean.com</code>, <code>ns2.digitalocean.com</code>, <code>ns3.digitalocean.com</code> as the name servers for your domain.</li>
+<li><strong>Setup your domain inside DigitalOcean to direct to your droplet</strong> in <a href="https://cloud.digitalocean.com/networking/domains">your DO panel</a>, registering your domain and creating an A record ponting to your droplet's IP.</li>
+</ul>
+<p>Once this is done, and the DNS configuration propagates (may take up to some hours) you should be able to open your domain on the browser and see an NGINX error page. This is fine, and means that you are now reaching your VM through the web!</p>
+<p><img src="/images/nginx503.png" alt="nginx503.png" /><em>This means everything is working fine so far</em></p>
+<h3 id="running-mailu">Running Mailu</h3>
+<p>Getting all the Mailu containers running is simple. Copy their docker-compose.yml and .env files from their <a href="https://mailu.io/compose/setup.html">documentation</a>, configure all the environment variables, and fire them up. It’s tunning these environment variables which can be a little tricky. Here are the tricky ones I had to set up.</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;"># /root/mailu/.env
+
+TLS_FLAVOR=mail
+
+ADMIN=true
+
+RELAYNETS=172.18.0.0/16 # Docker&#39;s subnet were the containers are running
+RELAYHOST=[smtp.mailgun.org]:587
+RELAY_LOGIN=postmaster@your-domain.com
+RELAY_PASSWORD=yourSecretKey # Get it from mailgun&#39;s panel
+</span></pre>
+<p>All the  <code>RELAY</code> stuff is just necessary for the last step, when I set up Mailgun as a relay server for mail sending. If you decide to host this in another cloud provider, it may not be necessary. The other important variable is <code>TLS_FLAVOR</code>. This, in addition to other configuration in the <code>docker-compose.yml</code> file, sets up the necessary certificates.</p>
+<p>The other important bits of configuration are in the <code>docker-compose.yml</code> file. This is pretty much the default one, except for the port binding in the <code>front</code> service, and some volume mounting. The important bits are here:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#65737e;"># /root/reverse-proxy/docker-compose.yml
+
+</span><span style="color:#bf616a;">version</span><span style="color:#c0c5ce;">: &#39;</span><span style="color:#a3be8c;">2</span><span style="color:#c0c5ce;">&#39;
+
+</span><span style="color:#bf616a;">services</span><span style="color:#c0c5ce;">:
+  </span><span style="color:#bf616a;">front</span><span style="color:#c0c5ce;">:
+    </span><span style="color:#bf616a;">image</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">mailu/nginx:$VERSION
+    container_name</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">mailu_front
+    restart</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">always
+    env_file</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">.env
+    ports</span><span style="color:#c0c5ce;">:
+    - &quot;</span><span style="color:#a3be8c;">110:110</span><span style="color:#c0c5ce;">&quot;
+    - &quot;</span><span style="color:#a3be8c;">143:143</span><span style="color:#c0c5ce;">&quot;
+    - &quot;</span><span style="color:#a3be8c;">993:993</span><span style="color:#c0c5ce;">&quot;
+    - &quot;</span><span style="color:#a3be8c;">995:995</span><span style="color:#c0c5ce;">&quot;
+    - &quot;</span><span style="color:#a3be8c;">25:25</span><span style="color:#c0c5ce;">&quot;
+    - &quot;</span><span style="color:#a3be8c;">465:465</span><span style="color:#c0c5ce;">&quot;
+    - &quot;</span><span style="color:#a3be8c;">587:587</span><span style="color:#c0c5ce;">&quot;
+    </span><span style="color:#bf616a;">expose</span><span style="color:#c0c5ce;">:
+      - &quot;</span><span style="color:#a3be8c;">80</span><span style="color:#c0c5ce;">&quot;
+      - &quot;</span><span style="color:#a3be8c;">443</span><span style="color:#c0c5ce;">&quot;
+    </span><span style="color:#bf616a;">volumes</span><span style="color:#c0c5ce;">:
+      - </span><span style="color:#bf616a;">/root/reverse-proxy/certs/mail.your-domain.com/key.pem:/certs/key.pem
+      </span><span style="color:#c0c5ce;">- </span><span style="color:#bf616a;">/root/reverse-proxy/certs/mail.your-domain.com/fullchain.pem:/certs/cert.pem
+      </span><span style="color:#c0c5ce;">- </span><span style="color:#bf616a;">/root/reverse-proxy/certs/mail.your-domain.com/dhparam.pem:/certs/dhparam.pem
+    environment</span><span style="color:#c0c5ce;">:
+      - </span><span style="color:#bf616a;">VIRTUAL_HOST=mail.your-domain.com
+      </span><span style="color:#c0c5ce;">- </span><span style="color:#bf616a;">LETSENCRYPT_HOST=mail.your-domain.com
+      </span><span style="color:#c0c5ce;">- </span><span style="color:#bf616a;">LETSENCRYPT_EMAIL=your@email.com
+    networks</span><span style="color:#c0c5ce;">:
+      - </span><span style="color:#bf616a;">default
+
+</span><span style="color:#c0c5ce;">...
+
+</span><span style="color:#bf616a;">networks</span><span style="color:#c0c5ce;">:
+  </span><span style="color:#bf616a;">default</span><span style="color:#c0c5ce;">:
+    </span><span style="color:#bf616a;">external</span><span style="color:#c0c5ce;">:
+      </span><span style="color:#bf616a;">name</span><span style="color:#c0c5ce;">: </span><span style="color:#a3be8c;">reverse-proxy_default
+</span></pre>
+<p>The volume mounting configuration is <strong>really</strong> important. Here, I'm sharing the certificates that were automatically generated by the <a href="https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion">Letsencrypt NGINX proxy companion</a> with the Mailu containers, so that they can use them for encryption configuration.</p>
+<p>It's also important to attach the <em>front</em> service to the reverse proxy network (in my case, called <code>reverse-proxy_default</code>). Without this, the reverse proxy running in front of all these containers won't be able to route traffic to them.</p>
+<h3 id="using-mailgun-as-relay-host">Using Mailgun as relay host</h3>
+<p>Once I got up to this point (without the <code>RELAY</code> variables set up in the <code>.env</code> file for the Mailu containers), I was ready to try my mail server. I was receiving mails perfectly from other accounts (@gmail. com, for example). But my outgoing emails were not sent successfully.</p>
+<p>After debugging a little, and inspecting the logs (specifically the logs from the <code>smtp</code> service), I narrowed the problem to this:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">smtp_1_3d8b20f9756e | postfix/smtp[121]: connect to gmail-smtp-in.l.google.com[172.217.197.27]:25: Operation timed out
+smtp_1_3d8b20f9756e | postfix/smtp[121]: connect to alt1.gmail-smtp-in.l.google.com[2800:3f0:4003:c02::1b]:25: Address not available
+smtp_1_3d8b20f9756e | postfix/smtp[121]: connect to alt1.gmail-smtp-in.l.google.com[172.217.192.26]:25: Operation timed out
+smtp_1_3d8b20f9756e | postfix/smtp[121]: connect to alt2.gmail-smtp-in.l.google.com[74.125.193.27]:25: Operation timed out
+smtp_1_3d8b20f9756e | postfix/smtp[121]: 4D8BD101050: to=, relay=none, delay=544, delays=454/0.01/90/0, dsn=4.4.1, status=deferred (connect to alt2.gmail-smtp-in.l.google.com[74.125.193.27]:25: Operation timed out)
+</span></pre>
+<p>The emails were being processed but got stuck once the communication with google (in this case) had to take place. I started to suspect of DigitalOcean blocking some ports by default in their droplets, so I wrote them a support ticket, asking if port 25 was blocked for outgoing traffic. This was their answer:</p>
+<blockquote>
+<p>Hello,
+Thank you for reaching out to us. We're very sorry that you are facing issues with SMTP.</p>
+<p>Stopping spam is a constant fight and due to this, your account has restrictions specifically on ports 25, 993, 995 and 465. However, you are be able to send out mail using port 587. You will need to open the port in your firewall.</p>
+<p>We realize this is inconvenient, but many customers in your position move their mailing activities to a third party service such as SendGrid or similar which processes such mail separately from their droplet. I'm sorry for the frustration but we're not able to lift these port restrictions at this time.</p>
+<p>In terms of a workaround, here are a few alternatives:</p>
+<ol>
+<li>Utilize port 587 for SMTP relay via another mail provider, for example G Suite/Gmail, Mailgun, etc. We have a guide on doing so using Postfix <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-a-mail-relay-with-postfix-and-mailgun-on-ubuntu-16-04">here</a></li>
+<li>Configure your app or service to send mail directly using either a SMTP client connection (typically using port 587), or API call via another mail provider such as Sendgrid, Mailgun, Mandrill, etc.</li>
+</ol>
+<p>Please note that with this restriction in place on port 25, mail servers hosted here will be unable to directly relay email to other mail servers, as communication between mail servers typically takes place on port 25.</p>
+<p>We think the API is the best solution, as it is honestly more scalable and what we would use if we wanted to &quot;future proof&quot; the project.</p>
+<p>Please feel free to reach out to us via this ticket if you have further queries or concerns, we will be around to help you out!</p>
+<p>Please let us know if you have any additional questions, and have a wonderful day!</p>
+</blockquote>
+<p>Later, I asked them if the block on port 25 was permanent, or if there was a way for me to unblock it. They said it will be blocked forever. <strong>So there is no way of sending email directly from my own mail server hosted in DigitalOcean.</strong></p>
+<p>I was not ready to give up on my quest. I've used <a href="https://www.mailgun.com/">Mailgun</a>'s free tier for sending emails in the past. And, as DigitalOcean's support team recommended, I should be able to use it as a relay host for routing my ougoing emails. The only restriction with the free tier is that you only can send 10.000 emails per month (a lot more of what I'm planning to...). Also, in the free plan, you get a shared IP, which can get into any of the IP blacklists if any other using it starts spamming (it happened to me once, but a simple support ticket in the Mailgun site explaining that the IP they assigned to me was in a blacklist was enough for them to assign me a clean new one :) ).</p>
+<p>I followed the <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-a-mail-relay-with-postfix-and-mailgun-on-ubuntu-16-04">tutorial they pointed me to</a>, and after resolving some errors related to &quot;<em>relay host login</em>&quot; (copying and executing the /mailu/relay_conf.sh file in the <code>smtp</code> container), I was able to send emails from my mail server, using Mailgun as a relay host.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>I guess the final result is not the optimal one. I'm limited by Mailgun's free tier mail quota, and using a shared IP for mail sending. I could do the same thing in another provider (not DigitalOcean), where the necessary ports are not blocked, and get a dedicated IP. But, for now, this solution is enough for me. And I learned a little bit more of server and email configuration.</p>
+
+    </div>
+
+    
+        <footer>
+            <hr>
+            <p>
+                
+                
+                    
+                    in <a href="https://javoscript.com/categories/blog/">blog</a>
+                
+                
+                    and tagged
+                    
+                        <a href="https://javoscript.com/tags/devops/">devops</a>
+                        
+                            
+                                
+                                    ,
+                                
+                            
+                        
+                    
+                        <a href="https://javoscript.com/tags/docker/">docker</a>
+                        
+                            
+                                
+                                    and
+                                
+                            
+                        
+                    
+                        <a href="https://javoscript.com/tags/mailing/">mailing</a>
+                        
+                            
+                        
+                    
+                
+            </p>
+        </footer>
+    
+</article>
+
+
+    </body>
+
+</html>

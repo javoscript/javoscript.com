@@ -1,0 +1,16 @@
+{% extends "index.html" %}
+
+{% block content %}
+    {% block header %}
+        {{ super() }}
+        <h1>{{ config.extra.after_dark_title }} <small>-- {{ config.description }}</small></h1>
+    {% endblock header %}
+
+    <div>
+        <h1>{{ term.name }}</h1>
+    </div>
+
+    {% for page in term.pages %}
+        {{ post_macros::page_in_list(page=page) }}
+    {% endfor %}
+{% endblock content %}

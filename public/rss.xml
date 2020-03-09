@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Javoscript</title>
+        <link>https://javoscript.com</link>
+        <description>Programming, technology and more...</description>
+        <generator>Zola</generator>
+        <language>en</language>
+        <atom:link href="https://javoscript.com/rss.xml" rel="self" type="application/rss+xml"/>
+        <lastBuildDate>Tue, 11 Jun 2019 00:00:00 +0000</lastBuildDate>
+        
+            <item>
+                <title>On the importance of knowing names... and Maximum Cardinality Matching in Bipartite Graphs</title>
+                <pubDate>Tue, 11 Jun 2019 00:00:00 +0000</pubDate>
+                <link>https://javoscript.com/blog/post/on-the-importance-of-knowing-names-and-maximum-cardinality-matching-in-bipartite-graphs/</link>
+                <guid>https://javoscript.com/blog/post/on-the-importance-of-knowing-names-and-maximum-cardinality-matching-in-bipartite-graphs/</guid>
+                <description>&lt;p&gt;It happened to me recently. I was developing the backend for a web application, and this apparently easy and trivial problem resulted to be a complicated one. It was similar to other problems I&#x27;ve dealt with in the past - but the solution was not the same as the one in any of those.&lt;&#x2F;p&gt;
+</description>
+            </item>
+        
+            <item>
+                <title>2019 Challenge: MVP #1 - Startups From The Bottom newsletter community</title>
+                <pubDate>Fri, 04 Jan 2019 00:00:00 +0000</pubDate>
+                <link>https://javoscript.com/blog/post/2019-challenge-mvp-1-startups-from-the-bottom-newsletter-community/</link>
+                <guid>https://javoscript.com/blog/post/2019-challenge-mvp-1-startups-from-the-bottom-newsletter-community/</guid>
+                <description>&lt;p&gt;As stated in &lt;a href=&quot;https:&#x2F;&#x2F;javoscript.com&#x2F;blog&#x2F;post&#x2F;2019-personal-challenge-an-mvp-every-two-months&quot;&gt;this post&lt;&#x2F;a&gt;, one of my goals for this year is to make a functioning and testable MVP every two months. Over the past weeks I&#x27;ve been listing potential ideas, and settled on which one would be my first MVP.&lt;&#x2F;p&gt;
+</description>
+            </item>
+        
+            <item>
+                <title>2019 Personal Challenge: an MVP every two months</title>
+                <pubDate>Sat, 22 Dec 2018 00:00:00 +0000</pubDate>
+                <link>https://javoscript.com/blog/post/2019-personal-challenge-an-mvp-every-two-months/</link>
+                <guid>https://javoscript.com/blog/post/2019-personal-challenge-an-mvp-every-two-months/</guid>
+                <description>&lt;p&gt;Inspired by posts and stories from the different sources I read daily (like &lt;a href=&quot;https:&#x2F;&#x2F;www.indiehackers.com&#x2F;&quot;&gt;Indiehackers&lt;&#x2F;a&gt;,  &lt;a href=&quot;https:&#x2F;&#x2F;www.startupsfromthebottom.com&#x2F;&quot;&gt;Startups from the bottom&lt;&#x2F;a&gt;, &lt;a href=&quot;https:&#x2F;&#x2F;thehustle.co&#x2F;episodes&quot;&gt;The hustle&lt;&#x2F;a&gt;, and others) it&#x27;s been a while since I wanted to start implementing ideas and test if they were good enough to become a viable product. And what a better date to set as the starting line than the beginning of a new year!&lt;&#x2F;p&gt;
+</description>
+            </item>
+        
+            <item>
+                <title>Lessons learned at my first game jam</title>
+                <pubDate>Thu, 20 Dec 2018 00:00:00 +0000</pubDate>
+                <link>https://javoscript.com/blog/post/lessons-learned-at-my-first-game-jam/</link>
+                <guid>https://javoscript.com/blog/post/lessons-learned-at-my-first-game-jam/</guid>
+                <description>&lt;p&gt;A few months ago, me and two fellow indie hackers went to a local game jam, in which the only requirement was to make a game with the motto: “it wasn’t designed for this”.&lt;&#x2F;p&gt;
+</description>
+            </item>
+        
+            <item>
+                <title>How I setup my own mail server in DigitalOcean (and almost fail at the very last step)</title>
+                <pubDate>Sun, 16 Dec 2018 00:00:00 +0000</pubDate>
+                <link>https://javoscript.com/blog/post/how-i-setup-my-own-mail-server-in-digitalocean-and-almost-fail-at-the-very-last-step/</link>
+                <guid>https://javoscript.com/blog/post/how-i-setup-my-own-mail-server-in-digitalocean-and-almost-fail-at-the-very-last-step/</guid>
+                <description>&lt;blockquote&gt;
+&lt;p&gt;TL;DR, Fully functional mail server with web client configured with Docker in DigitalOcean, using Mailgun as a relay server&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Don&#x27;t feel like reading? Check out the Github repo &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;javoscript&#x2F;mail-server&quot;&gt;here&lt;&#x2F;a&gt;!&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+</description>
+            </item>
+        
+    </channel>
+</rss>

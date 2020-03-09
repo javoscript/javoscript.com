@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Javoscript</title>
+
+      <link rel="icon" type="image/png" href="/favicon.png">
+
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="https://javoscript.com/rss.xml">
+      
+
+      
+          <link rel="stylesheet" href="https://javoscript.com/site.css">
+          <link rel="stylesheet" href="https://javoscript.com/extra.css">
+      
+
+      
+      
+    </head>
+
+    <body class="hack dark main container">
+        
+
+    
+        <header>
+            <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;javoscript.com">
+                    <span itemprop="name">&#x2F;home
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;javoscript.com&#x2F;categories">
+                    <span itemprop="name">&#x2F;categories
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;javoscript.com&#x2F;tags">
+                    <span itemprop="name">&#x2F;tags
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;github.com&#x2F;javoscript">
+                    <span itemprop="name">&#x2F;github
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;twitter.com&#x2F;javoscript">
+                    <span itemprop="name">&#x2F;twitter
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;linkedin.com&#x2F;in&#x2F;javier-ugarte">
+                    <span itemprop="name">&#x2F;linkedin
+                    </span></a>
+            
+            </nav>
+        </header>
+    
+    <h1>Javoscript <small>-- Programming, technology and more...</small></h1>
+
+
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        <h1 itemprop="headline">Lessons learned at my first game jam</h1>
+        <span class="muted">
+    <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <circle cx="16" cy="16" r="14"/>
+        <path d="M16 8 L16 16 20 20"/>
+    </svg>
+    <span>4 minute read</span>
+    <svg style="margin-bottom: -3px" class="i-edit" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z"/>
+    </svg>
+
+    Published: 2018-12-20
+</span>
+    </header>
+    <div itemprop="articleBody">
+      <p>A few months ago, me and two fellow indie hackers went to a local game jam, in which the only requirement was to make a game with the motto: “it wasn’t designed for this”.</p>
+<span id="continue-reading"></span>
+<p>We already knew we wanted to make a mobile game (iOS/Android), so we rapidly thought the game mechanics, sketched our game and went on to code it. Since we already had experience with these technologies (and they suited our needs), we decided we were using HTML5 + JavaScript for making the game and then port it to the different platforms (iOS and Android) using <a href="https://cordova.apache.org/">Cordova</a>. As a game engine, we used <a href="http://phaser.io/">Phaser.io</a>, a pretty simple JavaScript game development framework / engine, which served us really well.</p>
+<p>We ended up with a game in which you use a clock to waste time (it clearly isn’t designed for that), and by the end of the game jam, we already had published it to the Android Play Store (and a few days later to the Apple App Store).</p>
+<p>Here are some things I learned from this first-time experience in making a game and attending a game jam:</p>
+<ul>
+<li>Enjoy the whole ride: if you are spending a whole weekend (in our case) into making a minimum viable product (or, if you can, a finished deliverable), it has to be something you like building. From the very beginning of our game design stage I was already liking the idea of the final product. Even if we weren’t able to finish it in that weekend, I knew I was going to have fun the two days I was spending into thinking, designing and implementing our game.</li>
+<li>Use technologies you feel comfortable with: given the short time you have to think, design and code, it’s not a good idea to learn a whole new stack of technologies in these kind of events. Stick to what you know.</li>
+<li>Use the tools at your disposal: as developers, we all love building our stuff from scratch, having full control over out entire codebase. But sometimes it’s a good idea to trust already established tools to move faster and have a deliverable product with less effort.</li>
+<li>Don’t overthink every choice you make: maybe the way you decided to structure your code isn’t fully scalable. Maybe you could have implemented the sprite system in a more optimized web. Maybe your game isn’t taking full advantage of the tech’s potential. There will be time later to focus on all these things. Right now, you have to consciously oversee these issues, and move forward. You have to move fast.</li>
+</ul>
+<p><strong>You need an MVP</strong>: before the game jam ends you need to, at least, have the first iteration of your game working, with full mechanics and playability. It’s important to leave the event with a solid foundation of your game. Having a finished playable and fun prototype will give you future motivation to keep working on it, to optimize all those rough edges you left unpolished, to show your game to other people and ask them what they think of it. If you leave without a working prototype, you’ll probably never engage again with the idea of investing your time into it.</p>
+<p>We are always looking for some more inputs and traction, after all our relatives and friends have tried it, with pretty much good feedback. Obviously, the game is still not complete, and we have many ideas of things we want to add to it, and bug fixes we have to make, like improving the graphics and sound effects, adding more power ups, etc.</p>
+<p>I’d really appreciate if anyone is willing to try it and give some more feedback. The game is in Spanish (we are from Argentina), but it's definitely not language dependent.</p>
+<p>The links to the app stores are:</p>
+<ul>
+<li><a href="https://itunes.apple.com/ar/app/perder-tiempo/id1437864252?l=en&amp;mt=8">iOS: https://itunes.apple.com/ar/app/perder-tiempo/id1437864252?l=en&amp;mt=8</a></li>
+<li><a href="https://play.google.com/store/apps/details?id=como.perder.el.tiempo">Android: https://play.google.com/store/apps/details?id=como.perder.el.tiempo</a></li>
+</ul>
+
+    </div>
+
+    
+        <footer>
+            <hr>
+            <p>
+                
+                
+                    
+                    in <a href="https://javoscript.com/categories/blog/">blog</a>
+                
+                
+                    and tagged
+                    
+                        <a href="https://javoscript.com/tags/game-dev/">game-dev</a>
+                        
+                            
+                                
+                                    ,
+                                
+                            
+                        
+                    
+                        <a href="https://javoscript.com/tags/javascript/">javascript</a>
+                        
+                            
+                                
+                                    ,
+                                
+                            
+                        
+                    
+                        <a href="https://javoscript.com/tags/mobile/">mobile</a>
+                        
+                            
+                                
+                                    and
+                                
+                            
+                        
+                    
+                        <a href="https://javoscript.com/tags/mvp/">mvp</a>
+                        
+                            
+                        
+                    
+                
+            </p>
+        </footer>
+    
+</article>
+
+
+    </body>
+
+</html>

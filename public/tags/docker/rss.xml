@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Javoscript</title>
+        <link>https://javoscript.com</link>
+        <description>Programming, technology and more...</description>
+        <generator>Zola</generator>
+        <language>en</language>
+        <atom:link href="https://javoscript.com/tags/docker/rss.xml" rel="self" type="application/rss+xml"/>
+        <lastBuildDate>Sun, 16 Dec 2018 00:00:00 +0000</lastBuildDate>
+        
+            <item>
+                <title>How I setup my own mail server in DigitalOcean (and almost fail at the very last step)</title>
+                <pubDate>Sun, 16 Dec 2018 00:00:00 +0000</pubDate>
+                <link>https://javoscript.com/blog/post/how-i-setup-my-own-mail-server-in-digitalocean-and-almost-fail-at-the-very-last-step/</link>
+                <guid>https://javoscript.com/blog/post/how-i-setup-my-own-mail-server-in-digitalocean-and-almost-fail-at-the-very-last-step/</guid>
+                <description>&lt;blockquote&gt;
+&lt;p&gt;TL;DR, Fully functional mail server with web client configured with Docker in DigitalOcean, using Mailgun as a relay server&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Don&#x27;t feel like reading? Check out the Github repo &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;javoscript&#x2F;mail-server&quot;&gt;here&lt;&#x2F;a&gt;!&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+</description>
+            </item>
+        
+    </channel>
+</rss>
