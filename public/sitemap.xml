@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    
+        <url>
+            <loc>http://127.0.0.1:1111/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/blog/post/2019-challenge-mvp-1-startups-from-the-bottom-newsletter-community/</loc>
+            
+                <lastmod>2019-01-04</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/blog/post/2019-personal-challenge-an-mvp-every-two-months/</loc>
+            
+                <lastmod>2018-12-22</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/blog/post/adding-macros-to-laravel-eloquent-models/</loc>
+            
+                <lastmod>2020-03-10</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/blog/post/how-i-setup-my-own-mail-server-in-digitalocean-and-almost-fail-at-the-very-last-step/</loc>
+            
+                <lastmod>2018-12-16</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/blog/post/lessons-learned-at-my-first-game-jam/</loc>
+            
+                <lastmod>2018-12-20</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/blog/post/on-the-importance-of-knowing-names-and-maximum-cardinality-matching-in-bipartite-graphs/</loc>
+            
+                <lastmod>2019-06-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/categories/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/categories/blog/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/page/1/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/development/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/devops/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/docker/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/entrepreneurship/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/food-for-thought/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/game-dev/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/goals/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/javascript/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/laravel/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/life/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/mailing/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/mobile/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/mvp/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>http://127.0.0.1:1111/tags/package/</loc>
+            
+        </url>
+    
+</urlset>

@@ -6,7 +6,7 @@
         <description>Programming, technology and more...</description>
         <generator>Zola</generator>
         <language>en</language>
-        <atom:link href="https://javoscript.com/tags/development/rss.xml" rel="self" type="application/rss+xml"/>
+        <atom:link href="https://javoscript.com/tags/package/rss.xml" rel="self" type="application/rss+xml"/>
         <lastBuildDate>Tue, 10 Mar 2020 00:00:00 +0000</lastBuildDate>
         
             <item>
@@ -15,15 +15,6 @@
                 <link>https://javoscript.com/blog/post/adding-macros-to-laravel-eloquent-models/</link>
                 <guid>https://javoscript.com/blog/post/adding-macros-to-laravel-eloquent-models/</guid>
                 <description>&lt;p&gt;Maybe it&#x27;s not the most elegant solution. Maybe even it isn&#x27;t the right one. But I needed to explore this option, test it&#x27;s viability and decide afterwards.&lt;&#x2F;p&gt;
-</description>
-            </item>
-        
-            <item>
-                <title>On the importance of knowing names... and Maximum Cardinality Matching in Bipartite Graphs</title>
-                <pubDate>Tue, 11 Jun 2019 00:00:00 +0000</pubDate>
-                <link>https://javoscript.com/blog/post/on-the-importance-of-knowing-names-and-maximum-cardinality-matching-in-bipartite-graphs/</link>
-                <guid>https://javoscript.com/blog/post/on-the-importance-of-knowing-names-and-maximum-cardinality-matching-in-bipartite-graphs/</guid>
-                <description>&lt;p&gt;It happened to me recently. I was developing the backend for a web application, and this apparently easy and trivial problem resulted to be a complicated one. It was similar to other problems I&#x27;ve dealt with in the past - but the solution was not the same as the one in any of those.&lt;&#x2F;p&gt;
 </description>
             </item>
         

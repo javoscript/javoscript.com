@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131109829-1"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-131109829-1');
+      </script>
+
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Javoscript</title>
+
+      <link rel="icon" type="image/png" href="/favicon.png">
+
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="https://javoscript.com/rss.xml">
+      
+
+      
+          <link rel="stylesheet" href="https://javoscript.com/site.css">
+          <link rel="stylesheet" href="https://javoscript.com/extra.css">
+      
+
+      
+      
+    </head>
+
+    <body class="hack dark main container">
+        
+
+    
+        <header>
+            <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;javoscript.com">
+                    <span itemprop="name">&#x2F;home
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;javoscript.com&#x2F;categories">
+                    <span itemprop="name">&#x2F;categories
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;javoscript.com&#x2F;tags">
+                    <span itemprop="name">&#x2F;tags
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;github.com&#x2F;javoscript">
+                    <span itemprop="name">&#x2F;github
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;twitter.com&#x2F;javoscript">
+                    <span itemprop="name">&#x2F;twitter
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;linkedin.com&#x2F;in&#x2F;javier-ugarte">
+                    <span itemprop="name">&#x2F;linkedin
+                    </span></a>
+            
+            </nav>
+        </header>
+    
+    <h1>Javoscript <small>-- Programming, technology and more...</small></h1>
+
+
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        <h1 itemprop="headline">Adding macros to Laravel Elonquent models</h1>
+        <span class="muted">
+    <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <circle cx="16" cy="16" r="14"/>
+        <path d="M16 8 L16 16 20 20"/>
+    </svg>
+    <span>6 minute read</span>
+    <svg style="margin-bottom: -3px" class="i-edit" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z"/>
+    </svg>
+
+    Published: 2020-03-10
+</span>
+    </header>
+    <div itemprop="articleBody">
+      <p>Maybe it's not the most elegant solution. Maybe even it isn't the right one. But I needed to explore this option, test it's viability and decide afterwards.</p>
+<span id="continue-reading"></span>
+<p>It's a controversial topic. More often than not, it's not seen as a good programming practice. It surely has implications in code debug and <em>testability</em>.
+On the other hand, some people defend this approach citing the SOLID principles and other justifications like producing more generic implementations.</p>
+<p>What is it that I'm are talking about?</p>
+<h2 id="adding-methods-to-a-class-at-runtime">Adding methods to a class at runtime</h2>
+<p>Specifically, I will dive into how I managed to add methods to <a href="https://laravel.com">Laravel</a> <a href="https://laravel.com/docs/eloquent">Eloquent</a> <a href="https://laravel.com/docs/7.x/eloquent#defining-models">models</a> dinamically, at runtime, and how I ended up packaging it for reusability.
+This is achieved using Laravel's <a href="https://laravel.com/api/7.x/Illuminate/Support/Traits/Macroable.html">Macroable</a> trait which some internal classes make use of to allow developers to extend their functionality.</p>
+<h2 id="into-the-why">Into the <strong>why</strong></h2>
+<p>I'm working on developing a platform for a client. This platform is a really generic one. The client plans on developing once, and selling to multiple businesses. So it needs to be really generic and adaptable to various scenarios.
+But, the <strong>core</strong> of the platform will be always the same, shared through all it's instances.</p>
+<p>After defining what this common <strong>core</strong> should include, investigation on how to implement the desired extensibility started. And, because the <strong>core</strong> is shared between implementations, I wanted to find a solution that allowed me to add functionality to the core without modifying it's code.</p>
+<p>The idea of creating modules that add functionality (methods, relationships, endpoints) to the existing core was very appealing. In a Laravel application, some of these things are really easy to implement through packages (like routes, for example), but others require some more trickery.</p>
+<p>What ended up being quite difficult was adding methods to core-defined models without adding traits to them afterwards, or extending the classes. That's why I ended up making a <a href="https://github.com/javoscript/laravel-macroable-models">package</a>, for anyone to use, with the solution I found.</p>
+<h2 id="the-how">The <strong>how</strong></h2>
+<p>Because of Laravel Eloquent models not using the <code>Macroable</code> trait to allow for runtime-method-adding (<a href="https://github.com/laravel/ideas/issues/1473">and probably never will</a>) a different approach was needed.</p>
+<p>As some people <a href="https://medium.com/@zarehesmaiel/dynamic-relation-by-macro-988d638b6e51">already</a> <a href="https://laracasts.com/discuss/channels/eloquent/using-laravel-macros-on-eloquent-models">discovered</a> <a href="https://github.com/laravel/cashier-mollie/issues/107">before</a> me, Laravel's <code>Illuminate\Database\Eloquent\Builder</code> class uses the <code>Macroable</code> trait and, indirectly through it, you can add methods to Eloquent models at runtime. But all of these implementations where not generic, so a class-by-class statement was necessary.</p>
+<p>The solution proposed in those links is of the form:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#ab7967;">&lt;?php
+
+</span><span style="color:#65737e;">// This example adds the `categories` function to the `Post` model
+// Taken from https://medium.com/@zarehesmaiel/dynamic-relation-by-macro-988d638b6e51
+
+</span><span style="color:#ebcb8b;">Builder</span><span style="color:#c0c5ce;">::</span><span style="color:#bf616a;">macro</span><span style="color:#c0c5ce;">(‘</span><span style="color:#d08770;">categories</span><span style="color:#c0c5ce;">’, </span><span style="color:#b48ead;">function</span><span style="color:#c0c5ce;">() {
+    $</span><span style="color:#bf616a;">model </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">-&gt;</span><span style="color:#bf616a;">getModel</span><span style="color:#c0c5ce;">();
+    </span><span style="color:#b48ead;">if</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">model </span><span style="color:#c0c5ce;">instanceof </span><span style="color:#ebcb8b;">Post</span><span style="color:#c0c5ce;">) {
+         </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">model</span><span style="color:#c0c5ce;">-&gt;</span><span style="color:#bf616a;">belongsToMany</span><span style="color:#c0c5ce;">(</span><span style="color:#ebcb8b;">Category</span><span style="color:#c0c5ce;">::</span><span style="color:#d08770;">class</span><span style="color:#c0c5ce;">);
+    }
+    </span><span style="color:#96b5b4;">unset</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">static</span><span style="color:#c0c5ce;">::$</span><span style="color:#bf616a;">macros</span><span style="color:#c0c5ce;">[&#39;</span><span style="color:#a3be8c;">categories</span><span style="color:#c0c5ce;">&#39;]);
+    </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">model</span><span style="color:#c0c5ce;">-&gt;</span><span style="color:#bf616a;">categories</span><span style="color:#c0c5ce;">();
+ });
+</span></pre>
+<p>Two issues exist in that implementation:</p>
+<ul>
+<li>The same block has to be repeated for every macro added to a model</li>
+<li>The logic of the macro itself is tangled with the logic of the &quot;add this macro&quot; functionality, reducing readability</li>
+</ul>
+<p>Some inspiration was also taken from some other existing packages that solve similar problems:</p>
+<ul>
+<li>imanghafoori1/eloquent-relativity: <a href="https://github.com/imanghafoori1/eloquent-relativity">github</a></li>
+<li>spatie/laravel-collection-macros: <a href="https://github.com/spatie/laravel-collection-macros">github</a></li>
+<li>spatie/macroable: <a href="https://github.com/spatie/macroable">github</a></li>
+</ul>
+<p>Be sure to check them out to see how they implemented their solutions!</p>
+<h3 id="so-how-does-this-package-solve-this">So, <strong>how</strong> does this package solve this?</h3>
+<p>It registers a <code>singleton</code> (of the <code>Javoscript\MacroableModels\MacroableModels</code> class) in it's <code>Service Provider</code> that basically keeps track of all the added macros to the <code>Builder</code> class, and to which <code>model</code> they should be attached.</p>
+<p>In the singleton, an array of the following structure gets populated with the macro names, the models to which the macro corresponds to and the function itself (using PHP's <a href="https://www.php.net/manual/en/class.closure.php">Closure</a> class):</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#ab7967;">&lt;?php
+
+</span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">macros </span><span style="color:#c0c5ce;">= [
+    &quot;</span><span style="color:#a3be8c;">macroOne</span><span style="color:#c0c5ce;">&quot; =&gt; [
+        &quot;</span><span style="color:#a3be8c;">ModelOne</span><span style="color:#c0c5ce;">&quot; =&gt; </span><span style="color:#bf616a;">Closure</span><span style="color:#c0c5ce;">() {</span><span style="color:#65737e;">#3362 …2},
+        </span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">ModelTwo</span><span style="color:#c0c5ce;">&quot; =&gt; </span><span style="color:#bf616a;">Closure</span><span style="color:#c0c5ce;">() {</span><span style="color:#65737e;">#3376 …2},
+    </span><span style="color:#c0c5ce;">],
+    &quot;</span><span style="color:#a3be8c;">macroTwo</span><span style="color:#c0c5ce;">&quot; =&gt; [
+        &quot;</span><span style="color:#a3be8c;">ModelOne</span><span style="color:#c0c5ce;">&quot; =&gt; </span><span style="color:#bf616a;">Closure</span><span style="color:#c0c5ce;">() {</span><span style="color:#65737e;">#3366 …2},
+    </span><span style="color:#c0c5ce;">]
+]
+</span></pre>
+<p>Because the macros are actually being added to the <code>Builder</code> class, both functions defined with the name <code>macroOne</code> in the example above should be added into the same macro (the <code>Builder</code> class can't have two methods with the same name and different logic).</p>
+<p>So, the whole array corresponding to the <code>macroOne</code> key is passed to the macro being added to the <code>Builder</code> class and the macro itself fetches the corresponding <code>Closure</code> and executes it if it exists.</p>
+<p>Whenever a new method is added (or removed) through the package, this is the function in charge of doing what I explained just above:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#ab7967;">&lt;?php
+
+</span><span style="color:#b48ead;">private function </span><span style="color:#8fa1b3;">syncMacros</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">name</span><span style="color:#c0c5ce;">)
+{
+    $</span><span style="color:#bf616a;">models </span><span style="color:#c0c5ce;">= $</span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">-&gt;</span><span style="color:#bf616a;">macros</span><span style="color:#c0c5ce;">[$</span><span style="color:#bf616a;">name</span><span style="color:#c0c5ce;">];
+    </span><span style="color:#ebcb8b;">Builder</span><span style="color:#c0c5ce;">::</span><span style="color:#bf616a;">macro</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">name</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">function</span><span style="color:#c0c5ce;">(...$</span><span style="color:#bf616a;">args</span><span style="color:#c0c5ce;">) </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">name</span><span style="color:#c0c5ce;">, $</span><span style="color:#bf616a;">models</span><span style="color:#c0c5ce;">){
+        $</span><span style="color:#bf616a;">class </span><span style="color:#c0c5ce;">= </span><span style="color:#96b5b4;">get_class</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">-&gt;</span><span style="color:#bf616a;">getModel</span><span style="color:#c0c5ce;">());
+
+        </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(! </span><span style="color:#96b5b4;">isset</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">models</span><span style="color:#c0c5ce;">[$</span><span style="color:#bf616a;">class</span><span style="color:#c0c5ce;">])) {
+            </span><span style="color:#b48ead;">throw new </span><span style="color:#c0c5ce;">\</span><span style="color:#ebcb8b;">BadMethodCallException</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Call to undefined method </span><span style="color:#c0c5ce;">${</span><span style="color:#bf616a;">class</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;">::</span><span style="color:#c0c5ce;">${</span><span style="color:#bf616a;">name</span><span style="color:#c0c5ce;">}</span><span style="color:#a3be8c;">()</span><span style="color:#c0c5ce;">&quot;);
+        }
+
+        $</span><span style="color:#bf616a;">closure </span><span style="color:#c0c5ce;">= \</span><span style="color:#ebcb8b;">Closure</span><span style="color:#c0c5ce;">::</span><span style="color:#bf616a;">bind</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">models</span><span style="color:#c0c5ce;">[$</span><span style="color:#bf616a;">class</span><span style="color:#c0c5ce;">], $</span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">-&gt;</span><span style="color:#bf616a;">getModel</span><span style="color:#c0c5ce;">());
+        </span><span style="color:#b48ead;">return </span><span style="color:#96b5b4;">call_user_func</span><span style="color:#c0c5ce;">($</span><span style="color:#bf616a;">closure</span><span style="color:#c0c5ce;">, ...$</span><span style="color:#bf616a;">args</span><span style="color:#c0c5ce;">);
+    });
+}
+</span></pre>
+<blockquote>
+<p>psst! The package is open source.. go check out the code by yourself! (<a href="https://github.com/javoscript/laravel-macroable-models">link</a>)</p>
+</blockquote>
+<p>Some additional goodies were added for a better developer experience:</p>
+<h4 id="multiple-parameters-support">Multiple parameters support</h4>
+<p>You can define macros with any number and kind of parameters. For example:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#ab7967;">&lt;?php
+
+</span><span style="color:#65737e;">// Macro with no parameters
+</span><span style="color:#ebcb8b;">MacroableModels</span><span style="color:#c0c5ce;">::</span><span style="color:#bf616a;">addMacro</span><span style="color:#c0c5ce;">(App\</span><span style="color:#ebcb8b;">User</span><span style="color:#c0c5ce;">::</span><span style="color:#d08770;">class</span><span style="color:#c0c5ce;">, &#39;</span><span style="color:#a3be8c;">sayHi</span><span style="color:#c0c5ce;">&#39;, </span><span style="color:#b48ead;">function</span><span style="color:#c0c5ce;">() {
+    </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">&#39;</span><span style="color:#a3be8c;">Hi!</span><span style="color:#c0c5ce;">&#39;;
+})
+
+</span><span style="color:#65737e;">// Macro with one parameter
+</span><span style="color:#ebcb8b;">MacroableModels</span><span style="color:#c0c5ce;">::</span><span style="color:#bf616a;">addMacro</span><span style="color:#c0c5ce;">(App\</span><span style="color:#ebcb8b;">User</span><span style="color:#c0c5ce;">::</span><span style="color:#d08770;">class</span><span style="color:#c0c5ce;">, &#39;</span><span style="color:#a3be8c;">saySomething</span><span style="color:#c0c5ce;">&#39;, </span><span style="color:#b48ead;">function</span><span style="color:#c0c5ce;">(</span><span style="color:#ebcb8b;">String </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">something</span><span style="color:#c0c5ce;">) {
+    </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">something</span><span style="color:#c0c5ce;">;
+})
+
+
+$</span><span style="color:#bf616a;">user </span><span style="color:#c0c5ce;">= App\</span><span style="color:#ebcb8b;">User</span><span style="color:#c0c5ce;">::</span><span style="color:#bf616a;">first</span><span style="color:#c0c5ce;">();
+
+$</span><span style="color:#bf616a;">user</span><span style="color:#c0c5ce;">-&gt;</span><span style="color:#bf616a;">sayHi</span><span style="color:#c0c5ce;">();
+</span><span style="color:#65737e;">// &gt;&gt;&gt; &quot;Hi!&quot;
+
+</span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">user</span><span style="color:#c0c5ce;">-&gt;</span><span style="color:#bf616a;">saySomething</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Bye!</span><span style="color:#c0c5ce;">&quot;);
+</span><span style="color:#65737e;">// &gt;&gt;&gt; &quot;Bye!&quot;
+</span></pre><h4 id="context-binding">Context binding</h4>
+<p>As you normally would when defining methods in a model, you have access to the <code>$this</code> variable, and it works as you would expect!</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#ab7967;">&lt;?php
+
+</span><span style="color:#ebcb8b;">MacroableModels</span><span style="color:#c0c5ce;">::</span><span style="color:#bf616a;">addMacro</span><span style="color:#c0c5ce;">(App\</span><span style="color:#ebcb8b;">User</span><span style="color:#c0c5ce;">::</span><span style="color:#d08770;">class</span><span style="color:#c0c5ce;">, &#39;</span><span style="color:#a3be8c;">getId</span><span style="color:#c0c5ce;">&#39;, </span><span style="color:#b48ead;">function</span><span style="color:#c0c5ce;">() {
+    </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">$</span><span style="color:#bf616a;">this</span><span style="color:#c0c5ce;">-&gt;</span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">;
+});
+
+App\</span><span style="color:#ebcb8b;">User</span><span style="color:#c0c5ce;">::</span><span style="color:#bf616a;">first</span><span style="color:#c0c5ce;">()-&gt;</span><span style="color:#bf616a;">getId</span><span style="color:#c0c5ce;">();
+</span><span style="color:#65737e;">// &gt;&gt;&gt; 1
+</span></pre><h4 id="some-convenient-methods">Some convenient methods</h4>
+<p>Useful methods for querying existent macros and to what models they were attached:</p>
+<ul>
+<li><code>removeMacro</code></li>
+<li><code>getAllMacros</code></li>
+<li><code>modelHasMacro</code></li>
+<li><code>modelsThatImplement</code></li>
+<li><code>macrosForModel</code></li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>It's time to test if this is the right approach to my problem... But it'll be much easier to implement now that I have it packaged up and uploaded to <a href="https://packagist.org/packages/javoscript/laravel-macroable-models">packagist</a>.</p>
+<p>If you have any question, suggestions or feature request, drop by the <a href="https://github.com/javoscript/laravel-macroable-models">github project</a> and don't hesitate to open an issue! =)</p>
+
+    </div>
+
+    
+        <footer>
+            <hr>
+            <p>
+                
+                
+                    
+                    in <a href="https://javoscript.com/categories/blog/">blog</a>
+                
+                
+                    and tagged
+                    
+                        <a href="https://javoscript.com/tags/development/">development</a>
+                        
+                            
+                                
+                                    ,
+                                
+                            
+                        
+                    
+                        <a href="https://javoscript.com/tags/laravel/">laravel</a>
+                        
+                            
+                                
+                                    and
+                                
+                            
+                        
+                    
+                        <a href="https://javoscript.com/tags/package/">package</a>
+                        
+                            
+                        
+                    
+                
+            </p>
+        </footer>
+    
+</article>
+
+
+    </body>
+
+</html>

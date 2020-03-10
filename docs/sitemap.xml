@@ -21,6 +21,13 @@
         </url>
     
         <url>
+            <loc>https://javoscript.com/blog/post/adding-macros-to-laravel-eloquent-models/</loc>
+            
+                <lastmod>2020-03-10</lastmod>
+            
+        </url>
+    
+        <url>
             <loc>https://javoscript.com/blog/post/how-i-setup-my-own-mail-server-in-digitalocean-and-almost-fail-at-the-very-last-step/</loc>
             
                 <lastmod>2018-12-16</lastmod>
@@ -102,6 +109,11 @@
         </url>
     
         <url>
+            <loc>https://javoscript.com/tags/laravel/</loc>
+            
+        </url>
+    
+        <url>
             <loc>https://javoscript.com/tags/life/</loc>
             
         </url>
@@ -118,6 +130,11 @@
     
         <url>
             <loc>https://javoscript.com/tags/mvp/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://javoscript.com/tags/package/</loc>
             
         </url>
     
