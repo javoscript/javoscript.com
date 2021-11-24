@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Javoscript</title>
+      <title>Javoscript - laravel</title>
         <link>https://javoscript.com</link>
         <description>Programming, technology and more...</description>
         <generator>Zola</generator>
         <language>en</language>
         <atom:link href="https://javoscript.com/tags/laravel/rss.xml" rel="self" type="application/rss+xml"/>
         <lastBuildDate>Tue, 10 Mar 2020 00:00:00 +0000</lastBuildDate>
-        
-            <item>
-                <title>Adding macros to Laravel Elonquent models</title>
-                <pubDate>Tue, 10 Mar 2020 00:00:00 +0000</pubDate>
-                <link>https://javoscript.com/blog/post/adding-macros-to-laravel-eloquent-models/</link>
-                <guid>https://javoscript.com/blog/post/adding-macros-to-laravel-eloquent-models/</guid>
-                <description>&lt;p&gt;Maybe it&#x27;s not the most elegant solution. Maybe even it isn&#x27;t the right one. But I needed to explore this option, test it&#x27;s viability and decide afterwards.&lt;&#x2F;p&gt;
+        <item>
+            <title>Adding macros to Laravel Elonquent models</title>
+            <pubDate>Tue, 10 Mar 2020 00:00:00 +0000</pubDate>
+            <link>https://javoscript.com/blog/post/adding-macros-to-laravel-eloquent-models/</link>
+            <guid>https://javoscript.com/blog/post/adding-macros-to-laravel-eloquent-models/</guid>
+            <description>&lt;p&gt;Maybe it&#x27;s not the most elegant solution. Maybe even it isn&#x27;t the right one. But I needed to explore this option, test it&#x27;s viability and decide afterwards.&lt;&#x2F;p&gt;
 </description>
-            </item>
-        
+        </item>
     </channel>
 </rss>

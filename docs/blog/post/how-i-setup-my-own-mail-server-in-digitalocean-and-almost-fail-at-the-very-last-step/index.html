@@ -22,8 +22,6 @@
       <link rel="icon" type="image/png" href="/favicon.png">
 
       
-        <link rel="alternate" type="application/rss+xml" title="RSS" href="https://javoscript.com/rss.xml">
-      
 
       
           <link rel="stylesheet" href="https://javoscript.com/site.css">
@@ -134,72 +132,69 @@ Doing this is pretty straight forward:</p>
 <p><img src="/images/nginx503.png" alt="nginx503.png" /><em>This means everything is working fine so far</em></p>
 <h3 id="running-mailu">Running Mailu</h3>
 <p>Getting all the Mailu containers running is simple. Copy their docker-compose.yml and .env files from their <a href="https://mailu.io/compose/setup.html">documentation</a>, configure all the environment variables, and fire them up. It’s tunning these environment variables which can be a little tricky. Here are the tricky ones I had to set up.</p>
-<pre style="background-color:#2b303b;">
-<span style="color:#c0c5ce;"># /root/mailu/.env
-
-TLS_FLAVOR=mail
-
-ADMIN=true
-
-RELAYNETS=172.18.0.0/16 # Docker&#39;s subnet were the containers are running
-RELAYHOST=[smtp.mailgun.org]:587
-RELAY_LOGIN=postmaster@your-domain.com
-RELAY_PASSWORD=yourSecretKey # Get it from mailgun&#39;s panel
-</span></pre>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span># /root/mailu/.env
+</span><span>
+</span><span>TLS_FLAVOR=mail
+</span><span>
+</span><span>ADMIN=true
+</span><span>
+</span><span>RELAYNETS=172.18.0.0/16 # Docker&#39;s subnet were the containers are running
+</span><span>RELAYHOST=[smtp.mailgun.org]:587
+</span><span>RELAY_LOGIN=postmaster@your-domain.com
+</span><span>RELAY_PASSWORD=yourSecretKey # Get it from mailgun&#39;s panel
+</span></code></pre>
 <p>All the  <code>RELAY</code> stuff is just necessary for the last step, when I set up Mailgun as a relay server for mail sending. If you decide to host this in another cloud provider, it may not be necessary. The other important variable is <code>TLS_FLAVOR</code>. This, in addition to other configuration in the <code>docker-compose.yml</code> file, sets up the necessary certificates.</p>
 <p>The other important bits of configuration are in the <code>docker-compose.yml</code> file. This is pretty much the default one, except for the port binding in the <code>front</code> service, and some volume mounting. The important bits are here:</p>
-<pre style="background-color:#2b303b;">
-<span style="color:#65737e;"># /root/reverse-proxy/docker-compose.yml
-
-</span><span style="color:#bf616a;">version</span><span style="color:#c0c5ce;">: &#39;</span><span style="color:#a3be8c;">2</span><span style="color:#c0c5ce;">&#39;
-
-</span><span style="color:#bf616a;">services</span><span style="color:#c0c5ce;">:
-  </span><span style="color:#bf616a;">front</span><span style="color:#c0c5ce;">:
-    </span><span style="color:#bf616a;">image</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">mailu/nginx:$VERSION
-    container_name</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">mailu_front
-    restart</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">always
-    env_file</span><span style="color:#c0c5ce;">: </span><span style="color:#bf616a;">.env
-    ports</span><span style="color:#c0c5ce;">:
-    - &quot;</span><span style="color:#a3be8c;">110:110</span><span style="color:#c0c5ce;">&quot;
-    - &quot;</span><span style="color:#a3be8c;">143:143</span><span style="color:#c0c5ce;">&quot;
-    - &quot;</span><span style="color:#a3be8c;">993:993</span><span style="color:#c0c5ce;">&quot;
-    - &quot;</span><span style="color:#a3be8c;">995:995</span><span style="color:#c0c5ce;">&quot;
-    - &quot;</span><span style="color:#a3be8c;">25:25</span><span style="color:#c0c5ce;">&quot;
-    - &quot;</span><span style="color:#a3be8c;">465:465</span><span style="color:#c0c5ce;">&quot;
-    - &quot;</span><span style="color:#a3be8c;">587:587</span><span style="color:#c0c5ce;">&quot;
-    </span><span style="color:#bf616a;">expose</span><span style="color:#c0c5ce;">:
-      - &quot;</span><span style="color:#a3be8c;">80</span><span style="color:#c0c5ce;">&quot;
-      - &quot;</span><span style="color:#a3be8c;">443</span><span style="color:#c0c5ce;">&quot;
-    </span><span style="color:#bf616a;">volumes</span><span style="color:#c0c5ce;">:
-      - </span><span style="color:#bf616a;">/root/reverse-proxy/certs/mail.your-domain.com/key.pem:/certs/key.pem
-      </span><span style="color:#c0c5ce;">- </span><span style="color:#bf616a;">/root/reverse-proxy/certs/mail.your-domain.com/fullchain.pem:/certs/cert.pem
-      </span><span style="color:#c0c5ce;">- </span><span style="color:#bf616a;">/root/reverse-proxy/certs/mail.your-domain.com/dhparam.pem:/certs/dhparam.pem
-    environment</span><span style="color:#c0c5ce;">:
-      - </span><span style="color:#bf616a;">VIRTUAL_HOST=mail.your-domain.com
-      </span><span style="color:#c0c5ce;">- </span><span style="color:#bf616a;">LETSENCRYPT_HOST=mail.your-domain.com
-      </span><span style="color:#c0c5ce;">- </span><span style="color:#bf616a;">LETSENCRYPT_EMAIL=your@email.com
-    networks</span><span style="color:#c0c5ce;">:
-      - </span><span style="color:#bf616a;">default
-
-</span><span style="color:#c0c5ce;">...
-
-</span><span style="color:#bf616a;">networks</span><span style="color:#c0c5ce;">:
-  </span><span style="color:#bf616a;">default</span><span style="color:#c0c5ce;">:
-    </span><span style="color:#bf616a;">external</span><span style="color:#c0c5ce;">:
-      </span><span style="color:#bf616a;">name</span><span style="color:#c0c5ce;">: </span><span style="color:#a3be8c;">reverse-proxy_default
-</span></pre>
+<pre data-lang="yml" style="background-color:#2b303b;color:#c0c5ce;" class="language-yml "><code class="language-yml" data-lang="yml"><span style="color:#65737e;"># /root/reverse-proxy/docker-compose.yml
+</span><span>
+</span><span style="color:#bf616a;">version</span><span>: &#39;</span><span style="color:#a3be8c;">2</span><span>&#39;
+</span><span>
+</span><span style="color:#bf616a;">services</span><span>:
+</span><span>  </span><span style="color:#bf616a;">front</span><span>:
+</span><span>    </span><span style="color:#bf616a;">image</span><span>: </span><span style="color:#a3be8c;">mailu/nginx:$VERSION
+</span><span>    </span><span style="color:#bf616a;">container_name</span><span>: </span><span style="color:#a3be8c;">mailu_front
+</span><span>    </span><span style="color:#bf616a;">restart</span><span>: </span><span style="color:#a3be8c;">always
+</span><span>    </span><span style="color:#bf616a;">env_file</span><span>: </span><span style="color:#a3be8c;">.env
+</span><span>    </span><span style="color:#bf616a;">ports</span><span>:
+</span><span>    - &quot;</span><span style="color:#a3be8c;">110:110</span><span>&quot;
+</span><span>    - &quot;</span><span style="color:#a3be8c;">143:143</span><span>&quot;
+</span><span>    - &quot;</span><span style="color:#a3be8c;">993:993</span><span>&quot;
+</span><span>    - &quot;</span><span style="color:#a3be8c;">995:995</span><span>&quot;
+</span><span>    - &quot;</span><span style="color:#a3be8c;">25:25</span><span>&quot;
+</span><span>    - &quot;</span><span style="color:#a3be8c;">465:465</span><span>&quot;
+</span><span>    - &quot;</span><span style="color:#a3be8c;">587:587</span><span>&quot;
+</span><span>    </span><span style="color:#bf616a;">expose</span><span>:
+</span><span>      - &quot;</span><span style="color:#a3be8c;">80</span><span>&quot;
+</span><span>      - &quot;</span><span style="color:#a3be8c;">443</span><span>&quot;
+</span><span>    </span><span style="color:#bf616a;">volumes</span><span>:
+</span><span>      - </span><span style="color:#a3be8c;">/root/reverse-proxy/certs/mail.your-domain.com/key.pem:/certs/key.pem
+</span><span>      - </span><span style="color:#a3be8c;">/root/reverse-proxy/certs/mail.your-domain.com/fullchain.pem:/certs/cert.pem
+</span><span>      - </span><span style="color:#a3be8c;">/root/reverse-proxy/certs/mail.your-domain.com/dhparam.pem:/certs/dhparam.pem
+</span><span>    </span><span style="color:#bf616a;">environment</span><span>:
+</span><span>      - </span><span style="color:#a3be8c;">VIRTUAL_HOST=mail.your-domain.com
+</span><span>      - </span><span style="color:#a3be8c;">LETSENCRYPT_HOST=mail.your-domain.com
+</span><span>      - </span><span style="color:#a3be8c;">LETSENCRYPT_EMAIL=your@email.com
+</span><span>    </span><span style="color:#bf616a;">networks</span><span>:
+</span><span>      - </span><span style="color:#a3be8c;">default
+</span><span>
+</span><span>...
+</span><span>
+</span><span style="color:#bf616a;">networks</span><span>:
+</span><span>  </span><span style="color:#bf616a;">default</span><span>:
+</span><span>    </span><span style="color:#bf616a;">external</span><span>:
+</span><span>      </span><span style="color:#bf616a;">name</span><span>: </span><span style="color:#a3be8c;">reverse-proxy_default
+</span></code></pre>
 <p>The volume mounting configuration is <strong>really</strong> important. Here, I'm sharing the certificates that were automatically generated by the <a href="https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion">Letsencrypt NGINX proxy companion</a> with the Mailu containers, so that they can use them for encryption configuration.</p>
 <p>It's also important to attach the <em>front</em> service to the reverse proxy network (in my case, called <code>reverse-proxy_default</code>). Without this, the reverse proxy running in front of all these containers won't be able to route traffic to them.</p>
 <h3 id="using-mailgun-as-relay-host">Using Mailgun as relay host</h3>
 <p>Once I got up to this point (without the <code>RELAY</code> variables set up in the <code>.env</code> file for the Mailu containers), I was ready to try my mail server. I was receiving mails perfectly from other accounts (@gmail. com, for example). But my outgoing emails were not sent successfully.</p>
 <p>After debugging a little, and inspecting the logs (specifically the logs from the <code>smtp</code> service), I narrowed the problem to this:</p>
-<pre style="background-color:#2b303b;">
-<span style="color:#c0c5ce;">smtp_1_3d8b20f9756e | postfix/smtp[121]: connect to gmail-smtp-in.l.google.com[172.217.197.27]:25: Operation timed out
-smtp_1_3d8b20f9756e | postfix/smtp[121]: connect to alt1.gmail-smtp-in.l.google.com[2800:3f0:4003:c02::1b]:25: Address not available
-smtp_1_3d8b20f9756e | postfix/smtp[121]: connect to alt1.gmail-smtp-in.l.google.com[172.217.192.26]:25: Operation timed out
-smtp_1_3d8b20f9756e | postfix/smtp[121]: connect to alt2.gmail-smtp-in.l.google.com[74.125.193.27]:25: Operation timed out
-smtp_1_3d8b20f9756e | postfix/smtp[121]: 4D8BD101050: to=, relay=none, delay=544, delays=454/0.01/90/0, dsn=4.4.1, status=deferred (connect to alt2.gmail-smtp-in.l.google.com[74.125.193.27]:25: Operation timed out)
-</span></pre>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>smtp_1_3d8b20f9756e | postfix/smtp[121]: connect to gmail-smtp-in.l.google.com[172.217.197.27]:25: Operation timed out
+</span><span>smtp_1_3d8b20f9756e | postfix/smtp[121]: connect to alt1.gmail-smtp-in.l.google.com[2800:3f0:4003:c02::1b]:25: Address not available
+</span><span>smtp_1_3d8b20f9756e | postfix/smtp[121]: connect to alt1.gmail-smtp-in.l.google.com[172.217.192.26]:25: Operation timed out
+</span><span>smtp_1_3d8b20f9756e | postfix/smtp[121]: connect to alt2.gmail-smtp-in.l.google.com[74.125.193.27]:25: Operation timed out
+</span><span>smtp_1_3d8b20f9756e | postfix/smtp[121]: 4D8BD101050: to=, relay=none, delay=544, delays=454/0.01/90/0, dsn=4.4.1, status=deferred (connect to alt2.gmail-smtp-in.l.google.com[74.125.193.27]:25: Operation timed out)
+</span></code></pre>
 <p>The emails were being processed but got stuck once the communication with google (in this case) had to take place. I started to suspect of DigitalOcean blocking some ports by default in their droplets, so I wrote them a support ticket, asking if port 25 was blocked for outgoing traffic. This was their answer:</p>
 <blockquote>
 <p>Hello,
