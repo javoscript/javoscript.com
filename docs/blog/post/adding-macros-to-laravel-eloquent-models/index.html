@@ -83,7 +83,7 @@
 
 <article itemscope itemtype="http://schema.org/BlogPosting">
     <header>
-        <h1 itemprop="headline">Adding macros to Laravel Elonquent models</h1>
+        <h1 itemprop="headline">Adding macros to Laravel Eloquent models</h1>
         <span class="muted">
     <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32"
          width="16" height="16" fill="none" stroke="currentcolor"
@@ -120,19 +120,19 @@ But, the <strong>core</strong> of the platform will be always the same, shared t
 <p>Because of Laravel Eloquent models not using the <code>Macroable</code> trait to allow for runtime-method-adding (<a href="https://github.com/laravel/ideas/issues/1473">and probably never will</a>) a different approach was needed.</p>
 <p>As some people <a href="https://medium.com/@zarehesmaiel/dynamic-relation-by-macro-988d638b6e51">already</a> <a href="https://laracasts.com/discuss/channels/eloquent/using-laravel-macros-on-eloquent-models">discovered</a> <a href="https://github.com/laravel/cashier-mollie/issues/107">before</a> me, Laravel's <code>Illuminate\Database\Eloquent\Builder</code> class uses the <code>Macroable</code> trait and, indirectly through it, you can add methods to Eloquent models at runtime. But all of these implementations where not generic, so a class-by-class statement was necessary.</p>
 <p>The solution proposed in those links is of the form:</p>
-<pre data-lang="php" style="background-color:#2b303b;color:#c0c5ce;" class="language-php "><code class="language-php" data-lang="php"><span style="color:#ab7967;">&lt;?php
-</span><span>
-</span><span style="color:#65737e;">// This example adds the `categories` function to the `Post` model
-</span><span style="color:#65737e;">// Taken from https://medium.com/@zarehesmaiel/dynamic-relation-by-macro-988d638b6e51
-</span><span>
-</span><span style="color:#ebcb8b;">Builder</span><span>::</span><span style="color:#bf616a;">macro</span><span>(‘</span><span style="color:#d08770;">categories</span><span>’, </span><span style="color:#b48ead;">function</span><span>() {
-</span><span>    $</span><span style="color:#bf616a;">model </span><span>= $</span><span style="color:#bf616a;">this</span><span>-&gt;</span><span style="color:#bf616a;">getModel</span><span>();
-</span><span>    </span><span style="color:#b48ead;">if</span><span>($</span><span style="color:#bf616a;">model </span><span>instanceof </span><span style="color:#ebcb8b;">Post</span><span>) {
-</span><span>         </span><span style="color:#b48ead;">return </span><span>$</span><span style="color:#bf616a;">model</span><span>-&gt;</span><span style="color:#bf616a;">belongsToMany</span><span>(</span><span style="color:#ebcb8b;">Category</span><span>::</span><span style="color:#d08770;">class</span><span>);
-</span><span>    }
-</span><span>    </span><span style="color:#96b5b4;">unset</span><span>(</span><span style="color:#bf616a;">static</span><span>::$</span><span style="color:#bf616a;">macros</span><span>[&#39;</span><span style="color:#a3be8c;">categories</span><span>&#39;]);
-</span><span>    </span><span style="color:#b48ead;">return </span><span>$</span><span style="color:#bf616a;">model</span><span>-&gt;</span><span style="color:#bf616a;">categories</span><span>();
-</span><span> });
+<pre data-lang="php" style="background-color:#2b303b;color:#6c7079;" class="language-php "><code class="language-php" data-lang="php"><span style="color:#c94e42;">&lt;?php
+</span><span style="color:#abb2bf;">
+</span><span style="font-style:italic;color:#5f697a;">// This example adds the `categories` function to the `Post` model
+</span><span style="font-style:italic;color:#5f697a;">// Taken from https://medium.com/@zarehesmaiel/dynamic-relation-by-macro-988d638b6e51
+</span><span style="color:#abb2bf;">
+</span><span style="color:#f0c678;">Builder</span><span style="color:#abb2bf;">::</span><span style="color:#eb6772;">macro</span><span style="color:#abb2bf;">(‘</span><span style="color:#db9d63;">categories</span><span style="color:#abb2bf;">’, </span><span style="color:#cd74e8;">function</span><span style="color:#abb2bf;">() {
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">$model </span><span style="color:#adb7c9;">= </span><span style="color:#eb6772;">$this</span><span style="color:#abb2bf;">-&gt;</span><span style="color:#eb6772;">getModel</span><span style="color:#abb2bf;">();
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">if</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">$model </span><span style="color:#adb7c9;">instanceof </span><span style="color:#f0c678;">Post</span><span style="color:#abb2bf;">) {
+</span><span style="color:#abb2bf;">         </span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">$model</span><span style="color:#abb2bf;">-&gt;</span><span style="color:#eb6772;">belongsToMany</span><span style="color:#abb2bf;">(</span><span style="color:#f0c678;">Category</span><span style="color:#abb2bf;">::</span><span style="color:#db9d63;">class</span><span style="color:#abb2bf;">);
+</span><span style="color:#abb2bf;">    }
+</span><span style="color:#abb2bf;">    </span><span style="color:#5ebfcc;">unset</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">static</span><span style="color:#abb2bf;">::</span><span style="color:#eb6772;">$macros</span><span style="color:#abb2bf;">[</span><span style="color:#9acc76;">&#39;categories&#39;</span><span style="color:#abb2bf;">]);
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">$model</span><span style="color:#abb2bf;">-&gt;</span><span style="color:#eb6772;">categories</span><span style="color:#abb2bf;">();
+</span><span style="color:#abb2bf;"> });
 </span></code></pre>
 <p>Two issues exist in that implementation:</p>
 <ul>
@@ -149,37 +149,37 @@ But, the <strong>core</strong> of the platform will be always the same, shared t
 <h3 id="so-how-does-this-package-solve-this">So, <strong>how</strong> does this package solve this?</h3>
 <p>It registers a <code>singleton</code> (of the <code>Javoscript\MacroableModels\MacroableModels</code> class) in it's <code>Service Provider</code> that basically keeps track of all the added macros to the <code>Builder</code> class, and to which <code>model</code> they should be attached.</p>
 <p>In the singleton, an array of the following structure gets populated with the macro names, the models to which the macro corresponds to and the function itself (using PHP's <a href="https://www.php.net/manual/en/class.closure.php">Closure</a> class):</p>
-<pre data-lang="php" style="background-color:#2b303b;color:#c0c5ce;" class="language-php "><code class="language-php" data-lang="php"><span style="color:#ab7967;">&lt;?php
-</span><span>
-</span><span>$</span><span style="color:#bf616a;">macros </span><span>= [
-</span><span>    &quot;</span><span style="color:#a3be8c;">macroOne</span><span>&quot; =&gt; [
-</span><span>        &quot;</span><span style="color:#a3be8c;">ModelOne</span><span>&quot; =&gt; </span><span style="color:#bf616a;">Closure</span><span>() {</span><span style="color:#65737e;">#3362 …2},
-</span><span>        &quot;</span><span style="color:#a3be8c;">ModelTwo</span><span>&quot; =&gt; </span><span style="color:#bf616a;">Closure</span><span>() {</span><span style="color:#65737e;">#3376 …2},
-</span><span>    ],
-</span><span>    &quot;</span><span style="color:#a3be8c;">macroTwo</span><span>&quot; =&gt; [
-</span><span>        &quot;</span><span style="color:#a3be8c;">ModelOne</span><span>&quot; =&gt; </span><span style="color:#bf616a;">Closure</span><span>() {</span><span style="color:#65737e;">#3366 …2},
-</span><span>    ]
-</span><span>]
+<pre data-lang="php" style="background-color:#2b303b;color:#6c7079;" class="language-php "><code class="language-php" data-lang="php"><span style="color:#c94e42;">&lt;?php
+</span><span style="color:#abb2bf;">
+</span><span style="color:#eb6772;">$macros </span><span style="color:#adb7c9;">= </span><span style="color:#abb2bf;">[
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;macroOne&quot; </span><span style="color:#adb7c9;">=&gt; </span><span style="color:#abb2bf;">[
+</span><span style="color:#abb2bf;">        </span><span style="color:#9acc76;">&quot;ModelOne&quot; </span><span style="color:#adb7c9;">=&gt; </span><span style="color:#eb6772;">Closure</span><span style="color:#abb2bf;">() {</span><span style="font-style:italic;color:#5f697a;">#3362 …2},
+</span><span style="color:#abb2bf;">        </span><span style="color:#9acc76;">&quot;ModelTwo&quot; </span><span style="color:#adb7c9;">=&gt; </span><span style="color:#eb6772;">Closure</span><span style="color:#abb2bf;">() {</span><span style="font-style:italic;color:#5f697a;">#3376 …2},
+</span><span style="color:#abb2bf;">    ],
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;macroTwo&quot; </span><span style="color:#adb7c9;">=&gt; </span><span style="color:#abb2bf;">[
+</span><span style="color:#abb2bf;">        </span><span style="color:#9acc76;">&quot;ModelOne&quot; </span><span style="color:#adb7c9;">=&gt; </span><span style="color:#eb6772;">Closure</span><span style="color:#abb2bf;">() {</span><span style="font-style:italic;color:#5f697a;">#3366 …2},
+</span><span style="color:#abb2bf;">    ]
+</span><span style="color:#abb2bf;">]
 </span></code></pre>
 <p>Because the macros are actually being added to the <code>Builder</code> class, both functions defined with the name <code>macroOne</code> in the example above should be added into the same macro (the <code>Builder</code> class can't have two methods with the same name and different logic).</p>
 <p>So, the whole array corresponding to the <code>macroOne</code> key is passed to the macro being added to the <code>Builder</code> class and the macro itself fetches the corresponding <code>Closure</code> and executes it if it exists.</p>
 <p>Whenever a new method is added (or removed) through the package, this is the function in charge of doing what I explained just above:</p>
-<pre data-lang="php" style="background-color:#2b303b;color:#c0c5ce;" class="language-php "><code class="language-php" data-lang="php"><span style="color:#ab7967;">&lt;?php
-</span><span>
-</span><span style="color:#b48ead;">private function </span><span style="color:#8fa1b3;">syncMacros</span><span>($</span><span style="color:#bf616a;">name</span><span>)
-</span><span>{
-</span><span>    $</span><span style="color:#bf616a;">models </span><span>= $</span><span style="color:#bf616a;">this</span><span>-&gt;</span><span style="color:#bf616a;">macros</span><span>[$</span><span style="color:#bf616a;">name</span><span>];
-</span><span>    </span><span style="color:#ebcb8b;">Builder</span><span>::</span><span style="color:#bf616a;">macro</span><span>($</span><span style="color:#bf616a;">name</span><span>, </span><span style="color:#b48ead;">function</span><span>(...$</span><span style="color:#bf616a;">args</span><span>) </span><span style="color:#b48ead;">use </span><span>($</span><span style="color:#bf616a;">name</span><span>, $</span><span style="color:#bf616a;">models</span><span>){
-</span><span>        $</span><span style="color:#bf616a;">class </span><span>= </span><span style="color:#96b5b4;">get_class</span><span>($</span><span style="color:#bf616a;">this</span><span>-&gt;</span><span style="color:#bf616a;">getModel</span><span>());
-</span><span>
-</span><span>        </span><span style="color:#b48ead;">if </span><span>(! </span><span style="color:#96b5b4;">isset</span><span>($</span><span style="color:#bf616a;">models</span><span>[$</span><span style="color:#bf616a;">class</span><span>])) {
-</span><span>            </span><span style="color:#b48ead;">throw new </span><span>\</span><span style="color:#ebcb8b;">BadMethodCallException</span><span>(&quot;</span><span style="color:#a3be8c;">Call to undefined method </span><span>${</span><span style="color:#bf616a;">class</span><span>}</span><span style="color:#a3be8c;">::</span><span>${</span><span style="color:#bf616a;">name</span><span>}</span><span style="color:#a3be8c;">()</span><span>&quot;);
-</span><span>        }
-</span><span>
-</span><span>        $</span><span style="color:#bf616a;">closure </span><span>= \</span><span style="color:#ebcb8b;">Closure</span><span>::</span><span style="color:#bf616a;">bind</span><span>($</span><span style="color:#bf616a;">models</span><span>[$</span><span style="color:#bf616a;">class</span><span>], $</span><span style="color:#bf616a;">this</span><span>-&gt;</span><span style="color:#bf616a;">getModel</span><span>());
-</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#96b5b4;">call_user_func</span><span>($</span><span style="color:#bf616a;">closure</span><span>, ...$</span><span style="color:#bf616a;">args</span><span>);
-</span><span>    });
-</span><span>}
+<pre data-lang="php" style="background-color:#2b303b;color:#6c7079;" class="language-php "><code class="language-php" data-lang="php"><span style="color:#c94e42;">&lt;?php
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">private function </span><span style="color:#5cb3fa;">syncMacros</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">$name</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">$models </span><span style="color:#adb7c9;">= </span><span style="color:#eb6772;">$this</span><span style="color:#abb2bf;">-&gt;</span><span style="color:#eb6772;">macros</span><span style="color:#abb2bf;">[</span><span style="color:#eb6772;">$name</span><span style="color:#abb2bf;">];
+</span><span style="color:#abb2bf;">    </span><span style="color:#f0c678;">Builder</span><span style="color:#abb2bf;">::</span><span style="color:#eb6772;">macro</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">$name</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">function</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">...</span><span style="color:#eb6772;">$args</span><span style="color:#abb2bf;">) </span><span style="color:#cd74e8;">use </span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">$name</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">$models</span><span style="color:#abb2bf;">){
+</span><span style="color:#abb2bf;">        </span><span style="color:#eb6772;">$class </span><span style="color:#adb7c9;">= </span><span style="color:#5ebfcc;">get_class</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">$this</span><span style="color:#abb2bf;">-&gt;</span><span style="color:#eb6772;">getModel</span><span style="color:#abb2bf;">());
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">        </span><span style="color:#cd74e8;">if </span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">! </span><span style="color:#5ebfcc;">isset</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">$models</span><span style="color:#abb2bf;">[</span><span style="color:#eb6772;">$class</span><span style="color:#abb2bf;">])) {
+</span><span style="color:#abb2bf;">            </span><span style="color:#cd74e8;">throw new </span><span style="color:#abb2bf;">\</span><span style="color:#f0c678;">BadMethodCallException</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;Call to undefined method </span><span style="color:#eb6772;">${class}</span><span style="color:#9acc76;">::</span><span style="color:#eb6772;">${name}</span><span style="color:#9acc76;">()&quot;</span><span style="color:#abb2bf;">);
+</span><span style="color:#abb2bf;">        }
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">        </span><span style="color:#eb6772;">$closure </span><span style="color:#adb7c9;">= </span><span style="color:#abb2bf;">\</span><span style="color:#f0c678;">Closure</span><span style="color:#abb2bf;">::</span><span style="color:#eb6772;">bind</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">$models</span><span style="color:#abb2bf;">[</span><span style="color:#eb6772;">$class</span><span style="color:#abb2bf;">], </span><span style="color:#eb6772;">$this</span><span style="color:#abb2bf;">-&gt;</span><span style="color:#eb6772;">getModel</span><span style="color:#abb2bf;">());
+</span><span style="color:#abb2bf;">        </span><span style="color:#cd74e8;">return </span><span style="color:#5ebfcc;">call_user_func</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">$closure</span><span style="color:#abb2bf;">, </span><span style="color:#adb7c9;">...</span><span style="color:#eb6772;">$args</span><span style="color:#abb2bf;">);
+</span><span style="color:#abb2bf;">    });
+</span><span style="color:#abb2bf;">}
 </span></code></pre>
 <blockquote>
 <p>psst! The package is open source.. go check out the code by yourself! (<a href="https://github.com/javoscript/laravel-macroable-models">link</a>)</p>
@@ -187,37 +187,37 @@ But, the <strong>core</strong> of the platform will be always the same, shared t
 <p>Some additional goodies were added for a better developer experience:</p>
 <h4 id="multiple-parameters-support">Multiple parameters support</h4>
 <p>You can define macros with any number and kind of parameters. For example:</p>
-<pre data-lang="php" style="background-color:#2b303b;color:#c0c5ce;" class="language-php "><code class="language-php" data-lang="php"><span style="color:#ab7967;">&lt;?php
-</span><span>
-</span><span style="color:#65737e;">// Macro with no parameters
-</span><span style="color:#ebcb8b;">MacroableModels</span><span>::</span><span style="color:#bf616a;">addMacro</span><span>(App\</span><span style="color:#ebcb8b;">User</span><span>::</span><span style="color:#d08770;">class</span><span>, &#39;</span><span style="color:#a3be8c;">sayHi</span><span>&#39;, </span><span style="color:#b48ead;">function</span><span>() {
-</span><span>    </span><span style="color:#b48ead;">return </span><span>&#39;</span><span style="color:#a3be8c;">Hi!</span><span>&#39;;
-</span><span>})
-</span><span>
-</span><span style="color:#65737e;">// Macro with one parameter
-</span><span style="color:#ebcb8b;">MacroableModels</span><span>::</span><span style="color:#bf616a;">addMacro</span><span>(App\</span><span style="color:#ebcb8b;">User</span><span>::</span><span style="color:#d08770;">class</span><span>, &#39;</span><span style="color:#a3be8c;">saySomething</span><span>&#39;, </span><span style="color:#b48ead;">function</span><span>(</span><span style="color:#ebcb8b;">String </span><span>$</span><span style="color:#bf616a;">something</span><span>) {
-</span><span>    </span><span style="color:#b48ead;">return </span><span>$</span><span style="color:#bf616a;">something</span><span>;
-</span><span>})
-</span><span>
-</span><span>
-</span><span>$</span><span style="color:#bf616a;">user </span><span>= App\</span><span style="color:#ebcb8b;">User</span><span>::</span><span style="color:#bf616a;">first</span><span>();
-</span><span>
-</span><span>$</span><span style="color:#bf616a;">user</span><span>-&gt;</span><span style="color:#bf616a;">sayHi</span><span>();
-</span><span style="color:#65737e;">// &gt;&gt;&gt; &quot;Hi!&quot;
-</span><span>
-</span><span>$</span><span style="color:#bf616a;">user</span><span>-&gt;</span><span style="color:#bf616a;">saySomething</span><span>(&quot;</span><span style="color:#a3be8c;">Bye!</span><span>&quot;);
-</span><span style="color:#65737e;">// &gt;&gt;&gt; &quot;Bye!&quot;
+<pre data-lang="php" style="background-color:#2b303b;color:#6c7079;" class="language-php "><code class="language-php" data-lang="php"><span style="color:#c94e42;">&lt;?php
+</span><span style="color:#abb2bf;">
+</span><span style="font-style:italic;color:#5f697a;">// Macro with no parameters
+</span><span style="color:#f0c678;">MacroableModels</span><span style="color:#abb2bf;">::</span><span style="color:#eb6772;">addMacro</span><span style="color:#abb2bf;">(App\</span><span style="color:#f0c678;">User</span><span style="color:#abb2bf;">::</span><span style="color:#db9d63;">class</span><span style="color:#abb2bf;">, </span><span style="color:#9acc76;">&#39;sayHi&#39;</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">function</span><span style="color:#abb2bf;">() {
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">return </span><span style="color:#9acc76;">&#39;Hi!&#39;</span><span style="color:#abb2bf;">;
+</span><span style="color:#abb2bf;">})
+</span><span style="color:#abb2bf;">
+</span><span style="font-style:italic;color:#5f697a;">// Macro with one parameter
+</span><span style="color:#f0c678;">MacroableModels</span><span style="color:#abb2bf;">::</span><span style="color:#eb6772;">addMacro</span><span style="color:#abb2bf;">(App\</span><span style="color:#f0c678;">User</span><span style="color:#abb2bf;">::</span><span style="color:#db9d63;">class</span><span style="color:#abb2bf;">, </span><span style="color:#9acc76;">&#39;saySomething&#39;</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">function</span><span style="color:#abb2bf;">(</span><span style="color:#f0c678;">String </span><span style="color:#eb6772;">$something</span><span style="color:#abb2bf;">) {
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">$something</span><span style="color:#abb2bf;">;
+</span><span style="color:#abb2bf;">})
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">
+</span><span style="color:#eb6772;">$user </span><span style="color:#adb7c9;">= </span><span style="color:#abb2bf;">App\</span><span style="color:#f0c678;">User</span><span style="color:#abb2bf;">::</span><span style="color:#eb6772;">first</span><span style="color:#abb2bf;">();
+</span><span style="color:#abb2bf;">
+</span><span style="color:#eb6772;">$user</span><span style="color:#abb2bf;">-&gt;</span><span style="color:#eb6772;">sayHi</span><span style="color:#abb2bf;">();
+</span><span style="font-style:italic;color:#5f697a;">// &gt;&gt;&gt; &quot;Hi!&quot;
+</span><span style="color:#abb2bf;">
+</span><span style="color:#eb6772;">$user</span><span style="color:#abb2bf;">-&gt;</span><span style="color:#eb6772;">saySomething</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;Bye!&quot;</span><span style="color:#abb2bf;">);
+</span><span style="font-style:italic;color:#5f697a;">// &gt;&gt;&gt; &quot;Bye!&quot;
 </span></code></pre>
 <h4 id="context-binding">Context binding</h4>
 <p>As you normally would when defining methods in a model, you have access to the <code>$this</code> variable, and it works as you would expect!</p>
-<pre data-lang="php" style="background-color:#2b303b;color:#c0c5ce;" class="language-php "><code class="language-php" data-lang="php"><span style="color:#ab7967;">&lt;?php
-</span><span>
-</span><span style="color:#ebcb8b;">MacroableModels</span><span>::</span><span style="color:#bf616a;">addMacro</span><span>(App\</span><span style="color:#ebcb8b;">User</span><span>::</span><span style="color:#d08770;">class</span><span>, &#39;</span><span style="color:#a3be8c;">getId</span><span>&#39;, </span><span style="color:#b48ead;">function</span><span>() {
-</span><span>    </span><span style="color:#b48ead;">return </span><span>$</span><span style="color:#bf616a;">this</span><span>-&gt;</span><span style="color:#bf616a;">id</span><span>;
-</span><span>});
-</span><span>
-</span><span>App\</span><span style="color:#ebcb8b;">User</span><span>::</span><span style="color:#bf616a;">first</span><span>()-&gt;</span><span style="color:#bf616a;">getId</span><span>();
-</span><span style="color:#65737e;">// &gt;&gt;&gt; 1
+<pre data-lang="php" style="background-color:#2b303b;color:#6c7079;" class="language-php "><code class="language-php" data-lang="php"><span style="color:#c94e42;">&lt;?php
+</span><span style="color:#abb2bf;">
+</span><span style="color:#f0c678;">MacroableModels</span><span style="color:#abb2bf;">::</span><span style="color:#eb6772;">addMacro</span><span style="color:#abb2bf;">(App\</span><span style="color:#f0c678;">User</span><span style="color:#abb2bf;">::</span><span style="color:#db9d63;">class</span><span style="color:#abb2bf;">, </span><span style="color:#9acc76;">&#39;getId&#39;</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">function</span><span style="color:#abb2bf;">() {
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">$this</span><span style="color:#abb2bf;">-&gt;</span><span style="color:#eb6772;">id</span><span style="color:#abb2bf;">;
+</span><span style="color:#abb2bf;">});
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">App\</span><span style="color:#f0c678;">User</span><span style="color:#abb2bf;">::</span><span style="color:#eb6772;">first</span><span style="color:#abb2bf;">()-&gt;</span><span style="color:#eb6772;">getId</span><span style="color:#abb2bf;">();
+</span><span style="font-style:italic;color:#5f697a;">// &gt;&gt;&gt; 1
 </span></code></pre>
 <h4 id="some-convenient-methods">Some convenient methods</h4>
 <p>Useful methods for querying existent macros and to what models they were attached:</p>

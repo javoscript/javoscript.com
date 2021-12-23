@@ -1,5 +1,5 @@
 +++
-title = "Adding macros to Laravel Elonquent models"
+title = "Adding macros to Laravel Eloquent models"
 path = "blog/post/adding-macros-to-laravel-eloquent-models"
 
 [taxonomies]
