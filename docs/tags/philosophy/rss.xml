@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-      <title>Javoscript - food for thought</title>
+      <title>Javoscript - philosophy</title>
         <link>https://javoscript.com</link>
         <description>Programming, technology and more...</description>
         <generator>Zola</generator>
         <language>en</language>
-        <atom:link href="https://javoscript.com/tags/food-for-thought/rss.xml" rel="self" type="application/rss+xml"/>
+        <atom:link href="https://javoscript.com/tags/philosophy/rss.xml" rel="self" type="application/rss+xml"/>
         <lastBuildDate>Sat, 15 Jan 2022 00:00:00 +0000</lastBuildDate>
         <item>
             <title>Objective vs subjective - in terms of relational databases</title>
@@ -14,14 +14,6 @@
             <link>https://javoscript.com/blog/post/objective-vs-subjective-in-terms-of-relational-databases/</link>
             <guid>https://javoscript.com/blog/post/objective-vs-subjective-in-terms-of-relational-databases/</guid>
             <description>&lt;p&gt;I&#x27;ve been reading some philosophy books lately, and the way my mind likes to reason about things always comes back to my software development background. On the matter of the subjective versus objective points of view, my brain immediately thought about how this would be represented in a relational database structure.&lt;&#x2F;p&gt;
-</description>
-        </item>
-        <item>
-            <title>On the importance of knowing names... and Maximum Cardinality Matching in Bipartite Graphs</title>
-            <pubDate>Tue, 11 Jun 2019 00:00:00 +0000</pubDate>
-            <link>https://javoscript.com/blog/post/on-the-importance-of-knowing-names-and-maximum-cardinality-matching-in-bipartite-graphs/</link>
-            <guid>https://javoscript.com/blog/post/on-the-importance-of-knowing-names-and-maximum-cardinality-matching-in-bipartite-graphs/</guid>
-            <description>&lt;p&gt;It happened to me recently. I was developing the backend for a web application, and this apparently easy and trivial problem resulted to be a complicated one. It was similar to other problems I&#x27;ve dealt with in the past - but the solution was not the same as the one in any of those.&lt;&#x2F;p&gt;
 </description>
         </item>
     </channel>

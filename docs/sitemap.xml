@@ -24,6 +24,10 @@
         <lastmod>2018-12-20</lastmod>
     </url>
     <url>
+        <loc>https://javoscript.com/blog/post/objective-vs-subjective-in-terms-of-relational-databases/</loc>
+        <lastmod>2022-01-15</lastmod>
+    </url>
+    <url>
         <loc>https://javoscript.com/blog/post/on-the-importance-of-knowing-names-and-maximum-cardinality-matching-in-bipartite-graphs/</loc>
         <lastmod>2019-06-11</lastmod>
     </url>
@@ -80,5 +84,11 @@
     </url>
     <url>
         <loc>https://javoscript.com/tags/package/</loc>
+    </url>
+    <url>
+        <loc>https://javoscript.com/tags/philosophy/</loc>
+    </url>
+    <url>
+        <loc>https://javoscript.com/tags/software-development/</loc>
     </url>
 </urlset>

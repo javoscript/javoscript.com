@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131109829-1"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-131109829-1');
+      </script>
+
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Javoscript</title>
+
+      <link rel="icon" type="image/png" href="/favicon.png">
+
+      
+
+      
+          <link rel="stylesheet" href="https://javoscript.com/site.css">
+          <link rel="stylesheet" href="https://javoscript.com/extra.css">
+      
+
+      
+      
+    </head>
+
+    <body class="hack dark main container">
+        
+
+    
+        <header>
+            <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;javoscript.com">
+                    <span itemprop="name">&#x2F;home
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;javoscript.com&#x2F;categories">
+                    <span itemprop="name">&#x2F;categories
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;javoscript.com&#x2F;tags">
+                    <span itemprop="name">&#x2F;tags
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;github.com&#x2F;javoscript">
+                    <span itemprop="name">&#x2F;github
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;twitter.com&#x2F;javoscript">
+                    <span itemprop="name">&#x2F;twitter
+                    </span></a>
+            
+                <a itemprop="url"
+                   class=""
+                   href="https:&#x2F;&#x2F;linkedin.com&#x2F;in&#x2F;javier-ugarte">
+                    <span itemprop="name">&#x2F;linkedin
+                    </span></a>
+            
+            </nav>
+        </header>
+    
+    <h1>Javoscript <small>-- Programming, technology and more...</small></h1>
+
+
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        <h1 itemprop="headline">Objective vs subjective - in terms of relational databases</h1>
+        <span class="muted">
+    <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <circle cx="16" cy="16" r="14"/>
+        <path d="M16 8 L16 16 20 20"/>
+    </svg>
+    <span>9 minute read</span>
+    <svg style="margin-bottom: -3px" class="i-edit" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z"/>
+    </svg>
+
+    Published: 2022-01-15
+</span>
+    </header>
+    <div itemprop="articleBody">
+      <p>I've been reading some philosophy books lately, and the way my mind likes to reason about things always comes back to my software development background. On the matter of the subjective versus objective points of view, my brain immediately thought about how this would be represented in a relational database structure.</p>
+<span id="continue-reading"></span><h1 id="motivation-for-this-post">Motivation for this post</h1>
+<p>On the book &quot;Zen and the art of motorcycle maintenance&quot; by Robert M. Pirsig, the main character guides us through his thoughts about the question of &quot;What is quality?&quot;. One of the biggest distinctions made in his reasoning is about how we define things through two different points of view: subjective and objective.
+These two approaches battle each other in every definition we try to make about any concept... &quot;Is there an absolute truth in regards to this?&quot;. &quot;Or does this <em>truth</em> depend on who the <em>observer</em> is?&quot;. &quot;Can we get to some common agreements?&quot;.</p>
+<p>I don't want to go in too deep, or even spoil the book to anyone. But I'll just say that even this duality of objective vs subjective is put under scrutiny, and the idea that Quality (this time with capital &quot;Q&quot;) precedes this division and so cannot be defined through these lenses is analyzed... If you want more details, go read the book!</p>
+<h2 id="dislaimer">Dislaimer</h2>
+<p>I'm not a philosopher, nor do I have all these abstract concepts completely clear in my mind. It is possible that I'm misusing some of them in the following sections. If that's the case, let me know! =)</p>
+<h1 id="a-quick-word-on-the-objective-and-subjective-points-of-view">A quick word on the objective and subjective points of view</h1>
+<p><img src="/images/subjective_objective_relational_databases/subjective_vs_objective.png" alt="Subjective vs Objective" /></p>
+<p>Let's try to understand what the differences are between these two perspectives.</p>
+<p>Let's say that:</p>
+<ul>
+<li>we have some <strong>entities</strong> </li>
+<li>these <strong>entities</strong> have some <strong>properties</strong></li>
+<li>and we ask some <strong>observers</strong> to tell us what the <strong>value</strong> of these <strong>properties</strong> are for these <strong>entities</strong> </li>
+</ul>
+<p>A concrete example might be:</p>
+<ul>
+<li>we have <strong>cars</strong></li>
+<li>these <strong>cars</strong> have <strong>properties</strong> like &quot;weight&quot; and &quot;practicality&quot;</li>
+<li>we ask some <strong>observers</strong> to tell us what the <strong>value</strong> is for the &quot;weight&quot; and &quot;practicality&quot; for each <strong>car</strong></li>
+</ul>
+<p>For the sake of the example, let's agree on one assumption: &quot;weight&quot; is an objective property and &quot;practicality&quot; is a subjective one.
+If that is true, then all observers should give us the same value for the weight of the cars, as it is an <strong>objective</strong> property and can be measured - it is intrinsic to the car itself and it doesn't depend on the appreciation of the observer. But for practicality, we might get different values from each observer. Maybe they appreciate different things when evaluating the practicality of a car. And because it depends on the observer, it is a <strong>subjective</strong> property.</p>
+<p>So, <strong>objective</strong> properties are <strong>intrinsic</strong> to the <strong>entity</strong> and don't depend on the <strong>observer</strong>. On the other hand, <strong>subjective</strong> properties arise from the appreciation of the <strong>observer</strong> when interacting with the observee (yes, that's a word!).</p>
+<h1 id="a-quick-word-on-relational-databases">A quick word on relational databases</h1>
+<blockquote>
+<p>NOTE: This is by no means a complete overview of relational databases theory. I just want to go over the basics and necessary concepts to lay the groundwork for the &quot;objective vs subjective&quot; example implementation.</p>
+</blockquote>
+<h2 id="tables">Tables</h2>
+<p>Relational databases are used to organize data into <strong>tables</strong>, and relate these tables via defined relationships. Each table is used to represent an entity that we want to store in the database, and has a set of columns that represent the properties of the entity. Tables are much the same as what maybe we are used to do in spreadsheets. Each row in the table represents an instance of the entity being stored on the table, with the values of its properties or attributes defined for each column.</p>
+<p>An important thing about relational databases, is that each table needs to have a special column: the identifier column (or <em>primary key</em>). The value in this column needs to be unique across all records of the table, and its used to identify each entity unambiguously.</p>
+<blockquote>
+<p>Note: it may be that the primary key is a combination of multiple columns, but for simplicity we will not get into those complications (if you are interested, see <a href="https://en.wikipedia.org/wiki/Composite_key">composite keys</a>.</p>
+</blockquote>
+<p>Following our example in the previous sections, we could represent <strong>observers</strong> in its table:</p>
+<p><img src="/images/subjective_objective_relational_databases/table_observers_1.png" alt="Observers table" /></p>
+<blockquote>
+<p>base <strong>observers</strong> table</p>
+</blockquote>
+<p>Here we defined three <strong>obervers</strong> of our experiment. Each observer has the attributes: <code>id</code>, <code>name</code> and <code>birth_date</code>. The <strong>id column</strong> is the <em>primary key</em> of our table: it must be unique.</p>
+<h2 id="relationships">Relationships</h2>
+<p>Now, tables are only one part of the equation. We need a way to connect entities between tables. This is where &quot;relationships&quot; come in to play. The primary keys of each table become really important again, as they are used as reference values.</p>
+<p>The way these relationships impact the tables' structure depends on the <em>cardinality</em> of the relationship:</p>
+<h3 id="one-to-one">One to One</h3>
+<p>When each record of one table is related to only one record of another, and viceversa. These tables could be merged into one, but for different reasons (like clarity, or security) they can be separated.</p>
+<p>Let's say we wanted to store the <strong>contact information</strong> of every <strong>observer</strong>.</p>
+<p>We could add the relevant columns on our <strong>observer</strong> table:</p>
+<p><img src="/images/subjective_objective_relational_databases/observers_with_contact.png" alt="Observers with Contact table" /></p>
+<blockquote>
+<p>contact information added in the same <strong>observer</strong> table</p>
+</blockquote>
+<p>But we could also store this information in a <strong>contacts</strong> table, and add a reference to our already existing <strong>observers</strong> table. Such <strong>contacts</strong> table could be:</p>
+<p><img src="/images/subjective_objective_relational_databases/observers_and_contacts.png" alt="Observers and Contacts table" /></p>
+<blockquote>
+<p>contact information in its own table</p>
+</blockquote>
+<p>If implemented this way, we need to enforce that no two records exist with the same <code>observer_id</code> value (adding the <code>unique</code> modifier when creating the database, for example).</p>
+<p>In this case we can say that:</p>
+<ul>
+<li>an observer <strong>has one</strong> contact information</li>
+<li>and a contact information <strong>has one</strong> observer</li>
+</ul>
+<h3 id="one-to-many">One to Many</h3>
+<p>When each record from a table is related to multiple records of another, but records from the latter can only be related to one record of the first. In this case, we add a <em>foreign key</em> (a reference to the primary key of the other table) to specify to which record of the referenced table we are linking this one.</p>
+<p>To keep expanding our example, let's say that we have <strong>car brands</strong>. Each <strong>car brand</strong> can have multiple <strong>cars</strong>, and each <strong>car</strong> belongs only to a <strong>car brand</strong>. Such implementation, in terms of database tables would look something like this:</p>
+<p><img src="/images/subjective_objective_relational_databases/brands_and_cars.png" alt="Brands and Cars" /></p>
+<blockquote>
+<p><strong>brands</strong> and <strong>cars</strong> tables</p>
+</blockquote>
+<p>Each <strong>car</strong> is linked to a <strong>car brand</strong>. And note that multiple cars can have the same &quot;brand_id&quot; value; they belong to the same brand. We can say that:</p>
+<ul>
+<li>a car brand <strong>has many</strong> cars</li>
+<li>a car <strong>belongs to</strong> a car brand</li>
+</ul>
+<h3 id="many-to-many">Many to Many</h3>
+<p>When each record from a table can be related to many records of another, and viceversa. In this case, we need to rely on an extra table, called &quot;associate table&quot; (or &quot;linking table&quot;, or &quot;pivot table&quot;), that holds the information of which entities are related to which. It'll become more clear with an example.</p>
+<p>Let's say we keep track of what <strong>features</strong> exist in each <strong>car</strong>. Each <strong>car</strong> may have many <strong>features</strong> and each <strong>feature</strong> may be present in many <strong>cars</strong>. So, we would probably do something like this:</p>
+<p><img src="/images/subjective_objective_relational_databases/cars_and_features.png" alt="Cars and Features" /></p>
+<p>If a record exists in this &quot;pivot table&quot; with the <code>feature_id</code> for a <code>car_id</code>, then it means that the car being referenced has the feature being referenced. In this example, the car with id 1 has the features with id 1 and 2, and the car with id 2 has the feature with id 3</p>
+<p>In this relationship, we can say that:</p>
+<ul>
+<li>a car <strong>has many</strong> features</li>
+<li>a feature <strong>is present in many</strong> cars</li>
+</ul>
+<h1 id="relational-database-representations">Relational database representations</h1>
+<p>How does this all translate to the philosophic question of whether quality is objective or subjective?</p>
+<p>We said that an <strong>objective</strong> property is intrinsic to the entity, and it doesn't depend on the appreciation of the observer. If we agree, for example, that the weight of a car can be measured and that that value is the absolute truth, then the &quot;weight&quot; property must live in the &quot;cars&quot; table, like we put it in the examples.</p>
+<h2 id="objective-quality">Objective quality</h2>
+<p>If &quot;quality&quot; were to be an objective property, we would just add the &quot;quality&quot; column to the &quot;cars&quot; table. Like so:</p>
+<p><img src="/images/subjective_objective_relational_databases/objective_quality.png" alt="Objective Quality" /></p>
+<blockquote>
+<p>objective quality implementation</p>
+</blockquote>
+<p>As we can see in the diagram, there is no linkage between observers and quality. It is independent of their observations, or even their existence. The cars would keep having the same quality even if no observers existed.</p>
+<h2 id="subjective-quality">Subjective quality</h2>
+<p>But, if &quot;quality&quot; were to be a subjective property, then we should have a way to store a different value of quality for each of the observers. Then, each car would <strong>have many</strong> values of quality (one for each observer), and each observer would have a value of quality for each car evaluated. This would then look like a &quot;many to many&quot; relationship.</p>
+<p>Let's name the pivot table &quot;observations&quot;. It would look like this:</p>
+<p><img src="/images/subjective_objective_relational_databases/subjective_quality.png" alt="Subjective Quality" /></p>
+<blockquote>
+<p>subjective quality implementation</p>
+</blockquote>
+<p>If we asked the 3 observers to evaluate the quality of cars 1 and 2, maybe we get something like the values in the diagram, where the &quot;observer 1&quot; said that the &quot;car 2&quot; has a quality of 3, but the &quot;observer 2&quot; assigned a quality of 4 to the same car.</p>
+<p>Here, the value of quality arises from the experimentation of the car by the observer. It is not something intrinsic of the car itself, but it is born from this interaction with the observer and defined by its appreciation. This means that without observers, no quality can be defined for a car.</p>
+<h1 id="closing-thoughts">Closing thoughts</h1>
+<p>It is really amazing to me how such apparently different topics can be related and used as mental models to try to better understand each other. Are you a software developer? What other software related concepts have you used in other areas? Let me know in the comments!</p>
+
+    </div>
+
+    
+        <footer>
+            <hr>
+            <p>
+                
+                
+                    
+                    in <a href="https://javoscript.com/categories/blog/">blog</a>
+                
+                
+                    and tagged
+                    
+                        <a href="https://javoscript.com/tags/food-for-thought/">food for thought</a>
+                        
+                            
+                                
+                                    ,
+                                
+                            
+                        
+                    
+                        <a href="https://javoscript.com/tags/philosophy/">philosophy</a>
+                        
+                            
+                                
+                                    and
+                                
+                            
+                        
+                    
+                        <a href="https://javoscript.com/tags/software-development/">software development</a>
+                        
+                            
+                        
+                    
+                
+            </p>
+        </footer>
+    
+</article>
+
+
+    </body>
+
+</html>

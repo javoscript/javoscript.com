@@ -1,1 +1,3 @@
 *.swp
+source_assets
+source_assets/*

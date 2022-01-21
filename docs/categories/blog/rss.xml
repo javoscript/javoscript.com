@@ -7,7 +7,15 @@
         <generator>Zola</generator>
         <language>en</language>
         <atom:link href="https://javoscript.com/categories/blog/rss.xml" rel="self" type="application/rss+xml"/>
-        <lastBuildDate>Tue, 10 Mar 2020 00:00:00 +0000</lastBuildDate>
+        <lastBuildDate>Sat, 15 Jan 2022 00:00:00 +0000</lastBuildDate>
+        <item>
+            <title>Objective vs subjective - in terms of relational databases</title>
+            <pubDate>Sat, 15 Jan 2022 00:00:00 +0000</pubDate>
+            <link>https://javoscript.com/blog/post/objective-vs-subjective-in-terms-of-relational-databases/</link>
+            <guid>https://javoscript.com/blog/post/objective-vs-subjective-in-terms-of-relational-databases/</guid>
+            <description>&lt;p&gt;I&#x27;ve been reading some philosophy books lately, and the way my mind likes to reason about things always comes back to my software development background. On the matter of the subjective versus objective points of view, my brain immediately thought about how this would be represented in a relational database structure.&lt;&#x2F;p&gt;
+</description>
+        </item>
         <item>
             <title>Adding macros to Laravel Eloquent models</title>
             <pubDate>Tue, 10 Mar 2020 00:00:00 +0000</pubDate>

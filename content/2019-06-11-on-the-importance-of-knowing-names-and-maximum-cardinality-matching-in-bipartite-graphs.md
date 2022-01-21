@@ -4,7 +4,7 @@ path = "blog/post/on-the-importance-of-knowing-names-and-maximum-cardinality-mat
 
 [taxonomies]
 categories = ["blog"]
-tags = ["development", "food-for-thought"]
+tags = ["development", "food for thought"]
 +++
 
 It happened to me recently. I was developing the backend for a web application, and this apparently easy and trivial problem resulted to be a complicated one. It was similar to other problems I've dealt with in the past - but the solution was not the same as the one in any of those.
@@ -31,7 +31,7 @@ People were characterized by their age and gender. And each rule had a variable 
 
 I also reformulated it in terms of buckets (replacing the rules) and objects (replacing the people). I had to put exactly one object in each bucket. And an object, given its shape (age and gender), could fit or not (it satisfies the rule's conditions) in a bucket. If there is a combination were each object ends up in a bucket, and each bucket has only one object inside, then that group of objects meets the necessary criteria, and a solution exists.
 
-In my case, as in the solution sought every people should be assigned to one rule and each rule to only one person, it only makes sense to try to find a solution if the number of elements in each set (people and rules) is the same.
+In my case, as in the solution sought, every person should be assigned to one rule and each rule to only one person, it only makes sense to try to find a solution if the number of elements in each set (people and rules) is the same.
 
 ## What are names, in essence?
 As a software developer I'm familiar, and use it periodically, with the concept of ***unique identifiers***.
@@ -56,7 +56,7 @@ Some of them pointed me towards another kind of problem, like the **[Knapsack Pr
 ![knapsack_problem.png](/images/knapsack_problem.png)
 > the Knapsack Problem
 
-**[Transportation problems](https://www.me.utexas.edu/~jensen/models/network/net8.html)** also got into the mix, and it seemed a promising modeling approach. If every one of my entities was considered as a *source*, and every condition was considered as a *destination* with a capacity of 1, and if a solution was found where all sources arrived at a destination.... I was getting closer!
+**[Transportation problems](https://www.me.utexas.edu/~jensen/models/network/net8.html)** also got thrown into the mix, and it seemed a promising modeling approach. If every one of my entities was considered as a *source*, and every condition was considered as a *destination* with a capacity of 1, and if a solution was found where all sources arrived at a destination.... I was getting closer!
 
 ![Network-flow-model-of-the-transportation-problem.png](/images/Network-flow-model-of-the-transportation-problem.png)
 > the Transportation Problem
@@ -67,7 +67,7 @@ I also dove into the ocean of **[Network Flow Problems](https://en.wikipedia.org
 > the Network Flow Problem
 
 ## I finally found it
-It wasn't easy. I knocked on many doors, in far-away-from-each-other neighborhoods, roaming in the universe of combinatorial theory, networks, graphs, algorithms, etc. But in the end I hit the target. The name I was looking for was **[Maximum Cardinality Matching in Bipartite Graphs](https://en.wikipedia.org/wiki/Maximum_cardinality_matching)**. Given a [bipartite graph](https://en.wikipedia.org/wiki/Bipartite_graph)  the goal is to find a [matching](https://en.wikipedia.org/wiki/Matching_(graph_theory)) with as many edges as possible (equivalently: a matching that covers as many vertices as possible). On one set, there were my entities. And on the other, the restrictions or conditions. An edge exists between elements of different sets if the entity satisfies the condition. For my particular problem, if the maximum cardinality of the constructed graph was equal to the number of entities, then a solution can be found where each entity satisfies a different condition.
+It wasn't easy. I knocked on many doors, in far-away-from-each-other neighborhoods, roaming in the universe of combinatorial theory, networks, graphs, algorithms, etc. But in the end I hit the target. The name I was looking for was **[Maximum Cardinality Matching in Bipartite Graphs](https://en.wikipedia.org/wiki/Maximum_cardinality_matching)**. Given a [bipartite graph](https://en.wikipedia.org/wiki/Bipartite_graph) the goal is to find a [matching](https://en.wikipedia.org/wiki/Matching_(graph_theory)) with as many edges as possible (equivalently: a matching that covers as many vertices as possible). On one set, there were my entities. And on the other, the restrictions or conditions. An edge exists between elements of different sets if the entity satisfies the condition. For my particular problem, if the maximum cardinality of the constructed graph was equal to the number of entities, then a solution can be found where each entity satisfies a different condition.
 
 Luckily, and for my peace of mind, I was glad to find out that there are multiple algorithms for solving this riddle.
 
